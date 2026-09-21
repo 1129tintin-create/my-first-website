@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>中山大學 - 潛在客戶導覽</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* --- 全域設定 --- */
+        body {
+            /* 背景：西子灣海天一色漸層 */
+            background: linear-gradient(135deg, #EBF5FB 0%, #FDEBD0 100%) !important;
+            padding-bottom: 120px;
+            margin: 0;
+            /* ✨ 新增：進入頁面時的縮放動畫 ✨ */
+            animation: page-entry 0.6s ease-out forwards;
+            overflow-x: hidden; /* 防止動畫過程中出現水平卷軸 */
+        }
+
+        /* 定義動畫關鍵影格 */
+        @keyframes page-entry {
+            0% {
+                opacity: 0;
+                transform: scale(1.05); /* 從 1.05 倍大小開始 */
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1); /* 縮回到原始大小 */
+            }
+        }
+
+        /* --- ✨ 核心設計：西灣夕照標題區 ✨ --- */
+        .ocean-header-container {
+            position: relative;
+            width: 100%;
+            /* 標題區背景：從深海藍過渡到夕陽金 */
+            background: linear-gradient(to right, #2980B9, #F39C12);
+            padding: 40px 0;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 5px solid #D35400; /* 深橘底線，象徵落日 */
+            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.3);
+            overflow: hidden;
+        }
+
+        /* 標題內容區 */
+        .header-content {
+            z-index: 2;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        /* 大標題文字 */
+        h1.main-title {
+            margin: 0 0 20px 0;
+            font-size: 56px;
+            font-weight: 900;
+            color: #FFFFFF;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 3px;
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* --- 海浪與夕陽裝飾 (左右兩邊) --- */
+        .ocean-deco {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .deco-left { left: 0; }
+        .deco-right { right: 0; }
+
+        /* SVG 線條設定 */
+        .ocean-svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: #AED6F1; /* 淡藍線條 */
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* --- 統編與地址 (膠囊版) --- */
+        .info-badge-container {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .copy-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-size: 18px;
+            color: #FFFFFF;
+            cursor: copy;
+            transition: all 0.2s;
+        }
+
+        .copy-badge:hover {
+            background: #D35400; /* 懸浮變深橘 */
+            transform: translateY(-3px);
+            color: #FEF9E7; /* 淺黃字 */
+            border-color: #D35400;
+            box-shadow: 0 0 15px rgba(211, 84, 0, 0.6);
+        }
+        .copy-badge:hover .badge-label { color: #FEF9E7; }
+
+        .copy-badge:active { transform: translateY(0); }
+        .copy-text { user-select: all; font-weight: 700; margin-left: 8px; font-family: monospace; font-size: 20px; }
+        .badge-label { user-select: none; color: #D6EAF8; font-weight: 500;}
+
+
+        /* --- 下方通用樣式 --- */
+        .animation-stage {
+            background-color: #2980B9 !important;
+            border-color: #AED6F1;
+            margin-top: 20px;
+        }
+        .runner-character { text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+        /* 標題與間距修正 */
+        h3 {
+            background: #FFFFFF;
+            padding: 12px 30px;
+            border-radius: 12px;
+            margin-top: 20px;      
+            margin-bottom: 30px;   
+            font-size: 24px;
+            font-weight: 800;
+            color: #154360; /* 深藍標題 */
+            display: inline-block;
+            border-left: 8px solid #2980B9;
+            border: 1px solid rgba(41, 128, 185, 0.2);
+            border-left-color: #2980B9;
+            box-shadow: 0 6px 20px rgba(41, 128, 185, 0.2);
+            position: relative;
+            z-index: 10;
+            clear: both;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px;
+            align-items: start; /* 防重疊關鍵 */
+            width: 96%;
+            max-width: 1600px;
+            margin: 0 auto;
+            margin-bottom: 80px;
+        }
+
+        /* 卡片樣式 (海洋風) */
+        a.dept-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            width: auto;
+            height: auto;
+            min-height: 120px;
+            
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #AED6F1;
+            border-radius: 16px;
+            
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-align: center;
+            position: relative;
+            text-decoration: none;
+            
+            z-index: 1;
+            box-shadow: 
+                8px 8px 20px rgba(41, 128, 185, 0.1),
+                -5px -5px 15px rgba(255, 255, 255, 0.9);
+        }
+
+        a.dept-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: white;
+            border-color: #2980B9;
+            box-shadow: 
+                15px 20px 40px rgba(41, 128, 185, 0.25),
+                -8px -8px 20px rgba(255, 255, 255, 1);
+            z-index: 20;
+        }
+
+        .card-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #154360;
+            font-weight: 800;
+            line-height: 1.4;
+        }
+        a.dept-card:hover .card-title { color: #2980B9; }
+
+        .dept-location {
+            font-size: 15px;
+            color: #555;
+            background: rgba(235, 245, 251, 0.8);
+            padding: 5px 12px;
+            border-radius: 6px;
+            margin-top: 5px;
+            user-select: none;
+            font-weight: 500;
+        }
+        
+        .loc-copy { user-select: all; cursor: copy; }
+
+        /* 特殊卡片：電漿/環境 (湖水綠) - 廢水處理 */
+        .env-card {
+            background: linear-gradient(135deg, #E8F8F5 0%, #D1F2EB 100%);
+            border-color: #1ABC9C !important;
+        }
+        .env-card:hover { border-color: #148F77 !important; }
+        .env-card .card-title { color: #0E6251; }
+
+        /* 特殊卡片：光電/材料 (夕陽金) - 真空鍍膜 */
+        .opto-card {
+            background: linear-gradient(135deg, #FEF9E7 0%, #FDEBD0 100%);
+            border-color: #F39C12 !important;
+        }
+        .opto-card:hover { border-color: #D35400 !important; }
+        .opto-card .card-title { color: #D35400; }
+    </style>
+</head>
+<body>
+
+    <div class="ocean-header-container">
+        
+        <div class="ocean-deco deco-left">
+            <svg class="ocean-svg" viewBox="0 0 100 200" preserveAspectRatio="none">
+                <path d="M0,50 Q25,20 50,50 T100,50" stroke-width="3" stroke="rgba(255,255,255,0.4)" />
+                <path d="M0,70 Q25,40 50,70 T100,70" stroke-width="2" stroke="rgba(255,255,255,0.3)" />
+                <path d="M0,90 Q25,60 50,90 T100,90" stroke-width="2" stroke="rgba(255,255,255,0.2)" />
+                
+                <path d="M10,150 Q30,120 50,150 T90,150" stroke="#F39C12" stroke-width="2" fill="none" />
+                <circle cx="20" cy="180" r="3" fill="#F39C12" stroke="none" />
+                <circle cx="80" cy="130" r="2" fill="#F39C12" stroke="none" />
+            </svg>
+        </div>
+
+        <div class="header-content">
+            <h1 class="main-title">國立中山大學 (NSYSU)</h1>
+            
+            <div class="info-badge-container">
+                <div class="copy-badge" title="複製統編">
+                    <span class="badge-label">統編：</span><span class="copy-text">76211194</span>
+                </div>
+                <div class="copy-badge" title="複製地址">
+                    <span class="badge-label">地址：</span><span class="copy-text">804 高雄市鼓山區蓮海路70號</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ocean-deco deco-right">
+            <svg class="ocean-svg" viewBox="0 0 100 200" preserveAspectRatio="none">
+                <circle cx="50" cy="60" r="20" fill="none" stroke="#F39C12" stroke-width="3" />
+                <line x1="50" y1="30" x2="50" y2="10" stroke="#F39C12" stroke-width="2" />
+                <line x1="50" y1="90" x2="50" y2="110" stroke="#F39C12" stroke-width="2" />
+                <line x1="20" y1="60" x2="0" y2="60" stroke="#F39C12" stroke-width="2" />
+                <line x1="80" y1="60" x2="100" y2="60" stroke="#F39C12" stroke-width="2" />
+                
+                <line x1="0" y1="120" x2="100" y2="120" stroke="rgba(255,255,255,0.3)" stroke-width="2" />
+            </svg>
+        </div>
+
+    </div>
+
+    <div class="animation-stage">
+        <div class="runner-character" style="font-size: 32px;">🏃‍♂️ 🌊 ⚡ 🧪</div>
+    </div>
+
+    <h3>🌊 環境與海洋資源 (電漿廢水/生技)</h3>
+    <div class="card-grid">
+        <a href="https://iee.nsysu.edu.tw/" target="_blank" class="dept-card env-card">
+            <span class="card-title">💧 環境工程研究所</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工學院 / 環工館</span></span>
+        </a>
+        <a href="https://maev.nsysu.edu.tw/" target="_blank" class="dept-card env-card">
+            <span class="card-title">⚓ 海洋環境及工程學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">海工館</span></span>
+        </a>
+        <a href="https://mbr.nsysu.edu.tw/" target="_blank" class="dept-card env-card">
+            <span class="card-title">🐟 海洋生物科技與資源</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">海科院</span></span>
+        </a>
+    </div>
+
+    <h3>🔦 材料與光電 (真空鍍膜/光學)</h3>
+    <div class="card-grid">
+        <a href="https://moes.nsysu.edu.tw/" target="_blank" class="dept-card opto-card">
+            <span class="card-title">🧱 材料與光電科學學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">理工長廊 / 材料館</span></span>
+        </a>
+        <a href="https://dop.nsysu.edu.tw/" target="_blank" class="dept-card opto-card">
+            <span class="card-title">💡 光電工程學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">國研大樓</span></span>
+        </a>
+        <a href="https://phys.nsysu.edu.tw/" target="_blank" class="dept-card opto-card">
+            <span class="card-title">⚛️ 物理學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">理學院 / 物理館</span></span>
+        </a>
+    </div>
+
+    <h3>⚡ 機電與工程 (真空設備/半導體)</h3>
+    <div class="card-grid">
+        <a href="https://mem.nsysu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🔧 機械與機電工程學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工學院 / 機電館</span></span>
+        </a>
+        <a href="https://ee.nsysu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🔌 電機工程學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工學院 / 電資大樓</span></span>
+        </a>
+    </div>
+
+    <h3>🧬 生技與化學 (石英管/電漿醫學)</h3>
+    <div class="card-grid">
+        <a href="https://chem.nsysu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🧪 化學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">理學院 / 化學館</span></span>
+        </a>
+        <a href="https://biology.nsysu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🧬 生物科學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">理學院 / 生科館</span></span>
+        </a>
+        <a href="https://imst.nsysu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🏥 醫學科技研究所</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">國研大樓</span></span>
+        </a>
+    </div>
+
+    <a href="index.html" style="background-color: #2980B9; color: white; width: 200px; padding: 12px; border-radius: 30px; font-size: 18px; display: inline-block;">
+        ⬅️ 回到首頁
+    </a>
+</body>
+</html>

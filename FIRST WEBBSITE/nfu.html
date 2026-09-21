@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>虎尾科大 - 潛在客戶導覽</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* --- 全域設定 --- */
+        body {
+            background: linear-gradient(135deg, #FFF8E1 0%, #E3F2FD 100%) !important;
+            padding-bottom: 80px; margin: 0; font-size: 14px;
+            animation: elegant-entry 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0; transform-origin: center top;
+        }
+        @keyframes elegant-entry { 0% { opacity: 0; transform: scale(1.03) translateY(15px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+
+        /* --- 標題區 --- */
+        .nfu-header-container {
+            position: relative; width: 100%;
+            background: linear-gradient(to right, #1565C0, #F9A825);
+            padding: 30px 0; margin-bottom: 30px;
+            display: flex; justify-content: center; align-items: center;
+            border-bottom: 4px solid #FF6F00; box-shadow: 0 4px 10px rgba(21, 101, 192, 0.3); overflow: hidden;
+        }
+        .header-content { z-index: 2; text-align: center; padding: 0 20px; }
+        h1.main-title {
+            margin: 0 0 15px 0; font-size: 42px; font-weight: 900; color: #FFFFFF;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.3); letter-spacing: 2px;
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* --- 學校官網按鈕 --- */
+        a.school-link-badge {
+            display: inline-flex; align-items: center; background: #FF6F00; color: #FFFFFF;
+            padding: 8px 24px; border-radius: 50px; border: 2px solid #FF6F00;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-size: 16px; font-weight: 700; text-decoration: none;
+            transition: all 0.2s; cursor: pointer; margin-bottom: 15px;
+        }
+        a.school-link-badge:hover { transform: translateY(-3px) scale(1.05); background: #FFFFFF; color: #FF6F00; border-color: #FFFFFF; }
+
+        /* --- 資訊區 --- */
+        .info-badge-container { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .copy-badge {
+            display: inline-flex; align-items: center; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px);
+            padding: 6px 16px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 14px; color: #FFFFFF; cursor: copy; transition: all 0.2s;
+        }
+        .copy-badge:hover { background: #FFFFFF; transform: translateY(-2px); color: #1565C0; border-color: #FFFFFF; }
+        .copy-badge:hover .badge-label { color: #1565C0; }
+        .copy-text { font-weight: 700; margin-left: 6px; font-family: monospace; user-select: all; cursor: copy; }
+        .badge-label { user-select: none; color: #FFF8E1; font-weight: 500; }
+
+        /* --- 裝飾 --- */
+        .nfu-deco { position: absolute; top: 0; bottom: 0; width: 180px; display: flex; justify-content: center; align-items: center; opacity: 0.15; pointer-events: none; }
+        .deco-left { left: 0; } .deco-right { right: 0; }
+        .nfu-svg { width: 100%; height: 100%; fill: none; stroke: #FFCC80; stroke-width: 1.5; }
+        .animation-stage { background-color: #1565C0 !important; border-color: #90CAF9; margin-top: 15px; padding: 5px 0; }
+        .runner-character { text-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 24px !important; }
+
+        h3 {
+            background: #FFFFFF; padding: 8px 20px; border-radius: 8px; margin-top: 25px; margin-bottom: 20px;
+            font-size: 20px; font-weight: 800; color: #1565C0; display: inline-block;
+            border-left: 5px solid #F9A825; border: 1px solid rgba(21, 101, 192, 0.2); border-left-color: #F9A825;
+            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.15);
+        }
+
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; align-items: start; width: 92%; max-width: 1200px; margin: 0 auto; margin-bottom: 40px; }
+
+        a.dept-card {
+            display: flex; flex-direction: column; justify-content: center; align-items: center; width: auto; height: auto; min-height: 100px;
+            padding: 20px 15px; background: rgba(255, 255, 255, 0.95); border: 1px solid #90CAF9; border-radius: 12px;
+            transition: all 0.2s; text-align: center; text-decoration: none; box-shadow: 5px 5px 15px rgba(21, 101, 192, 0.08);
+        }
+        a.dept-card:hover { transform: translateY(-5px) scale(1.01); background: white; border-color: #F9A825; box-shadow: 10px 15px 30px rgba(249, 168, 37, 0.2); }
+        .card-title { font-size: 18px; margin-bottom: 8px; color: #1565C0; font-weight: 700; }
+        a.dept-card:hover .card-title { color: #E65100; }
+        .dept-location { font-size: 13px; color: #666; background: rgba(227, 242, 253, 0.8); padding: 4px 10px; border-radius: 4px; margin-top: 4px; }
+        .loc-copy { user-select: all; cursor: copy; }
+
+        .mech-card { background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); border-color: #FFC107 !important; }
+        .mech-card:hover { border-color: #FF6F00 !important; }
+        .mech-card .card-title { color: #E65100; }
+        .elec-card { background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); border-color: #2196F3 !important; }
+        .elec-card .card-title { color: #0D47A1; }
+        .mat-card { background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%); border-color: #8E24AA !important; }
+        .mat-card .card-title { color: #6A1B9A; }
+    </style>
+</head>
+<body>
+
+    <div class="nfu-header-container">
+        <div class="nfu-deco deco-left"><svg class="nfu-svg" viewBox="0 0 100 200"><path d="M20,50 L80,50 L50,150 Z" /><circle cx="50" cy="50" r="10" /></svg></div>
+        <div class="header-content">
+            <h1 class="main-title">國立虎尾科技大學 (NFU)</h1>
+            <div><a href="https://www.nfu.edu.tw/" target="_blank" class="school-link-badge">🏫 學校官網</a></div>
+            <div class="info-badge-container">
+                <div class="copy-badge" title="點擊複製統編"><span class="badge-label">統編：</span><span class="copy-text">64967512</span></div>
+                <div class="copy-badge" title="點擊複製地址"><span class="badge-label">地址：</span><span class="copy-text">632 雲林縣虎尾鎮文化路64號</span></div>
+            </div>
+        </div>
+        <div class="nfu-deco deco-right"><svg class="nfu-svg" viewBox="0 0 100 200"><rect x="30" y="40" width="40" height="120" /><line x1="20" y1="100" x2="80" y2="100" /></svg></div>
+    </div>
+
+    <div class="animation-stage"><div class="runner-character">🏃‍♂️ 🐯 ⚙️ ⚡</div></div>
+
+    <h3>⚙️ 精密機械與設計</h3>
+    <div class="card-grid">
+        <a href="https://nfupme.nfu.edu.tw/" target="_blank" class="dept-card mech-card">
+            <span class="card-title">🔧 動力機械工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">第一校區 綜二館</span></span>
+        </a>
+        <a href="https://mde.nfu.edu.tw/" target="_blank" class="dept-card mech-card">
+            <span class="card-title">📐 機械設計工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">第一校區 綜一館</span></span>
+        </a>
+        <a href="https://autoweb.nfu.edu.tw/" target="_blank" class="dept-card mech-card">
+            <span class="card-title">🤖 自動化工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">第一校區 綜三館</span></span>
+        </a>
+        <a href="https://vehicle.nfu.edu.tw/" target="_blank" class="dept-card mech-card">
+            <span class="card-title">🚗 車輛工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">第三校區 綜三館</span></span>
+        </a>
+    </div>
+
+    <h3>⚡ 電資與光電</h3>
+    <div class="card-grid">
+        <a href="https://nfuee.nfu.edu.tw/" target="_blank" class="dept-card elec-card">
+            <span class="card-title">🔌 電機工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">第一校區 綜二館</span></span>
+        </a>
+        <a href="https://nfuel.nfu.edu.tw/" target="_blank" class="dept-card elec-card">
+            <span class="card-title">💻 電子工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">第一校區 綜三館</span></span>
+        </a>
+        <a href="https://nfueo.nfu.edu.tw/" target="_blank" class="dept-card elec-card">
+            <span class="card-title">💡 光電工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">第一校區 綜三館</span></span>
+        </a>
+    </div>
+
+    <h3>⚗️ 材料與工程</h3>
+    <div class="card-grid">
+        <a href="https://mse.nfu.edu.tw/" target="_blank" class="dept-card mat-card">
+            <span class="card-title">🧱 材料科學與工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">第一校區 綜二館</span></span>
+        </a>
+        <a href="https://nfuae.nfu.edu.tw/" target="_blank" class="dept-card mat-card">
+            <span class="card-title">✈️ 飛機工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">第二校區 綜三館</span></span>
+        </a>
+    </div>
+
+    <a href="index.html" class="footer-single-btn">⬅️ 回到首頁</a>
+</body>
+</html>

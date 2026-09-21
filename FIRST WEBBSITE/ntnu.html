@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國立臺灣師範大學 - 業務重點導覽</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+
+        :root {
+            --ntnu-red: #A30014;       
+            --ntnu-gold: #C2A34D;      
+            --bg-color: #f8f9fa;       
+            --text-color: #333;
+            --card-shadow: 0 8px 20px rgba(163, 0, 20, 0.1);
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0; padding: 0; color: var(--text-color);
+            background-image: radial-gradient(#d1d1d1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .nav-bar {
+            background: #222;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+        .back-btn {
+            color: white; text-decoration: none; font-weight: bold;
+            display: flex; align-items: center; gap: 8px; width: fit-content;
+            font-size: 1rem; transition: color 0.2s;
+        }
+        .back-btn:hover { color: var(--ntnu-gold); }
+
+        header {
+            background: linear-gradient(135deg, var(--ntnu-red), #6B000C);
+            color: white;
+            padding: 50px 20px 70px;
+            text-align: center;
+            border-bottom: 8px solid var(--ntnu-gold);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .bg-decoration {
+            position: absolute; top: -30px; left: -40px;
+            font-size: 16rem; opacity: 0.08; color: var(--ntnu-gold);
+            transform: rotate(-10deg); pointer-events: none;
+        }
+
+        h1 {
+            font-size: 3.5rem; margin: 0; font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        
+        .eng-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem; color: var(--ntnu-gold);
+            margin-top: 10px; letter-spacing: 2px; opacity: 0.95;
+        }
+
+        .info-bar {
+            display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+            margin-top: 35px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--ntnu-gold);
+            padding: 12px 28px; border-radius: 50px;
+            cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; gap: 10px;
+            color: white; font-weight: bold; position: relative;
+            font-size: 1.05rem;
+        }
+
+        .info-card:hover {
+            background: var(--ntnu-gold); color: var(--ntnu-red);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(194, 163, 77, 0.5);
+        }
+        .info-card:active { transform: scale(0.96); }
+        
+        .tooltip {
+            position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%);
+            background: #222; color: #fff; padding: 6px 12px; border-radius: 6px;
+            font-size: 13px; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+        }
+        .info-card.copied .tooltip { opacity: 1; }
+
+        .web-btn {
+            background: white; color: var(--ntnu-red);
+            text-decoration: none; padding: 12px 32px; border-radius: 50px;
+            font-weight: 900; box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px;
+            font-size: 1.1rem;
+        }
+        .web-btn:hover { background: var(--ntnu-gold); color: white; transform: translateY(-3px); }
+
+        .main-container {
+            margin: 50px auto 80px; 
+            max-width: 1300px; 
+            padding: 0 20px;
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 35px;
+            align-items: flex-start;
+        }
+
+        .dept-group {
+            background: white; border-radius: 16px;
+            width: 360px; flex-grow: 1; max-width: 400px;
+            box-shadow: var(--card-shadow);
+            border-top: 6px solid var(--ntnu-red);
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out;
+            transition: transform 0.3s ease;
+        }
+        .dept-group:hover { transform: translateY(-5px); }
+
+        .group-header {
+            background: #fdf5f6; padding: 25px 20px; text-align: center;
+            border-bottom: 1px solid #f2dcdb;
+        }
+        .group-header h2 { margin: 0; color: var(--ntnu-red); font-size: 1.6rem; font-weight: 800; }
+        .group-header p { margin: 8px 0 0; font-size: 0.95rem; color: #666; }
+
+        .dept-list { padding: 15px; }
+
+        .dept-link {
+            display: flex; align-items: center;
+            padding: 18px 20px; margin: 12px 0;
+            background: white; border: 1px solid #e0e0e0;
+            border-radius: 12px; text-decoration: none; color: #444;
+            transition: all 0.2s;
+            position: relative; overflow: hidden;
+        }
+
+        .dept-link:hover {
+            border-color: var(--ntnu-red);
+            background: #fff8f8;
+            transform: translateX(5px);
+            box-shadow: 4px 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .dept-link i {
+            font-size: 1.8rem; width: 45px; text-align: center;
+            color: var(--ntnu-gold); margin-right: 15px;
+        }
+        
+        .dept-name { font-weight: 700; font-size: 1.15rem; display: block; color: #222; }
+        .dept-desc { font-size: 0.9rem; color: #777; font-weight: normal; margin-top: 4px; display: block; }
+
+        .tag {
+            font-size: 0.8rem; padding: 4px 10px; border-radius: 6px;
+            margin-left: auto; font-weight: bold; white-space: nowrap;
+        }
+        .tag-plasma { background: #e3f2fd; color: #1565c0; } 
+        .tag-waste { background: #e8f5e9; color: #2e7d32; }  
+        .tag-material { background: #fff3e0; color: #ef6c00; } 
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .info-bar { flex-direction: column; align-items: center; }
+            .info-card { width: 90%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> 回首頁 (Dashboard)</a>
+    </div>
+
+    <header>
+        <i class="fas fa-bell bg-decoration"></i>
+        <h1>國立臺灣師範大學</h1>
+        <div class="eng-title">National Taiwan Normal University</div>
+        
+        <div class="info-bar">
+            <div class="web-btn" onclick="window.open('https://www.ntnu.edu.tw/', '_blank')" style="cursor: pointer;">
+                <i class="fas fa-university"></i> 學校官網
+            </div>
+            
+            <div class="info-card" onclick="copyText(this, '03735202')">
+                <i class="fas fa-file-invoice"></i> 
+                <span>統編：03735202</span>
+                <div class="tooltip">已複製統編！</div>
+            </div>
+            
+            <div class="info-card" onclick="copyText(this, '10610 台北市大安區和平東路一段162號')">
+                <i class="fas fa-map-marker-alt"></i> 
+                <span>地址：台北市大安區和平東路一段162號</span>
+                <div class="tooltip">已複製地址！</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+
+        <div class="dept-group">
+            <div class="group-header">
+                <h2><i class="fas fa-microchip"></i> 科技與工程</h2>
+                <p>石英管切削、電漿設備、材料分析</p>
+            </div>
+            <div class="dept-list">
+                <a href="https://www.ee.ntnu.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-bolt"></i>
+                    <div>
+                        <span class="dept-name">電機工程學系</span>
+                        <span class="dept-desc">電漿應用、真空設備、光電材料</span>
+                    </div>
+                    <span class="tag tag-plasma">電漿/設備</span>
+                </a>
+                <a href="https://www.me.ntnu.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-cogs"></i>
+                    <div>
+                        <span class="dept-name">機電工程學系</span>
+                        <span class="dept-desc">精密加工、自動化、石英切削</span>
+                    </div>
+                    <span class="tag tag-material">石英/加工</span>
+                </a>
+                <a href="https://www.ie.ntnu.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <span class="dept-name">光電工程研究所</span>
+                        <span class="dept-desc">光學薄膜、真空鍍膜、雷射加工</span>
+                    </div>
+                    <span class="tag tag-material">石英/光電</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="dept-group">
+            <div class="group-header">
+                <h2><i class="fas fa-atom"></i> 理學院</h2>
+                <p>物理化學分析、環工與廢水</p>
+            </div>
+            <div class="dept-list">
+                <a href="https://www.phy.ntnu.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-microscope"></i>
+                    <div>
+                        <span class="dept-name">物理學系</span>
+                        <span class="dept-desc">凝態物理、材料分析、真空技術</span>
+                    </div>
+                    <span class="tag tag-material">材料/真空</span>
+                </a>
+                <a href="https://www.chem.ntnu.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-vial"></i>
+                    <div>
+                        <span class="dept-name">化學系</span>
+                        <span class="dept-desc">材料合成、環境分析、廢水處理</span>
+                    </div>
+                    <span class="tag tag-waste">材料/環工</span>
+                </a>
+                <a href="https://www.biol.ntnu.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-dna"></i>
+                    <div>
+                        <span class="dept-name">生命科學專業學院</span>
+                        <span class="dept-desc">生物技術、生態環境監測</span>
+                    </div>
+                    <span class="tag tag-waste">生技/環工</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="dept-group">
+            <div class="group-header">
+                <h2><i class="fas fa-seedling"></i> 其他應用領域</h2>
+                <p>農業應用、環境工程分析</p>
+            </div>
+            <div class="dept-list">
+                 <a href="https://www.he.ntnu.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-apple-alt"></i>
+                    <div>
+                        <span class="dept-name">健康促進與衛生教育學系</span>
+                        <span class="dept-desc">環境衛生、廢水處理探討</span>
+                    </div>
+                    <span class="tag tag-waste">廢水/環保</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function copyText(element, text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            element.classList.add('copied');
+            setTimeout(() => {
+                element.classList.remove('copied');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

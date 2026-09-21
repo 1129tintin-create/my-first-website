@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNT 業務戰情室 - 全台學校導覽 (北中南排序版)</title>
+    <style>
+        /* --- 2026 業務戰情室風格 --- */
+        body { background: #f0f2f5; font-family: "Microsoft JhengHei", sans-serif; margin: 0; padding: 20px; }
+        
+        /* 搜尋與篩選區懸浮 */
+        .control-panel {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(240, 242, 245, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 10px 0 15px 0;
+            max-width: 1200px; margin: 0 auto;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .search-box { 
+            width: 100%; padding: 15px 25px; border-radius: 50px; border: 2px solid #fff;
+            font-size: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); outline: none; transition: 0.3s;
+            box-sizing: border-box;
+        }
+        .search-box:focus { border-color: #2196F3; box-shadow: 0 4px 20px rgba(33, 150, 243, 0.15); }
+
+        /* 地區篩選按鈕 */
+        .filter-group { display: flex; gap: 10px; margin-top: 10px; overflow-x: auto; padding-bottom: 5px; }
+        .filter-btn {
+            padding: 8px 16px; border-radius: 20px; border: 1px solid #ddd; background: white;
+            cursor: pointer; font-size: 14px; font-weight: bold; color: #555; transition: 0.2s; white-space: nowrap;
+        }
+        .filter-btn:hover { background: #f0f0f0; }
+        .filter-btn.active { background: #333; color: white; border-color: #333; }
+        
+        /* 顏色標籤 (北部藍/中部綠/南部橘) */
+        .filter-btn[data-region="North"].active { background: #2980b9; border-color: #2980b9; }
+        .filter-btn[data-region="Central"].active { background: #27ae60; border-color: #27ae60; }
+        .filter-btn[data-region="South"].active { background: #d35400; border-color: #d35400; }
+
+        /* 卡片網格 */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 20px auto; }
+        
+        .card { 
+            background: white; border-radius: 12px; padding: 20px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03); border-left: 5px solid #ccc; /* 改用左側邊框區分系所 */
+            display: flex; flex-direction: column; transition: transform 0.2s;
+            position: relative;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .school-badge { font-size: 14px; font-weight: bold; color: #333; }
+        .campus-badge { font-size: 12px; background: #eee; padding: 3px 8px; border-radius: 4px; color: #666; }
+        
+        /* 地區標籤 (顯示在卡片右上角) */
+        .region-tag { position: absolute; top: 10px; right: 10px; font-size: 12px; color: #999; font-weight: bold; opacity: 0.5;}
+
+        .dept { font-size: 18px; font-weight: 800; color: #222; margin: 5px 0 10px 0; line-height: 1.4; }
+        
+        .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: auto; }
+        .tag { font-size: 12px; background: #E3F2FD; color: #1565C0; padding: 3px 8px; border-radius: 6px; }
+
+        .note { 
+            margin-top: 12px; background: #FFFDE7; color: #F57F17; 
+            padding: 6px 10px; border-radius: 6px; font-size: 12px; 
+        }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; border-top: 1px solid #f0f0f0; padding-top: 12px; }
+        .btn { 
+            flex: 1; text-align: center; padding: 8px; border-radius: 8px; 
+            font-size: 13px; font-weight: bold; text-decoration: none; cursor: pointer; border: none; transition: 0.2s;
+        }
+        .btn-web { background: #f0f2f5; color: #333; }
+        .btn-web:hover { background: #dcdcdc; }
+        .btn-rec { background: #FFF3E0; color: #E65100; }
+        .btn-rec:hover { background: #FFE0B2; }
+
+        /* 系所分類顏色 (左邊框) */
+        .env { border-left-color: #4CAF50 !important; }   /* 環工: 綠 */
+        .sci { border-left-color: #9C27B0 !important; }   /* 理學: 紫 */
+        .elec { border-left-color: #2196F3 !important; }  /* 電資: 藍 */
+        .food { border-left-color: #FF9800 !important; }  /* 生技: 橘 */
+        .eng { border-left-color: #607D8B !important; }   /* 機械: 灰 */
+
+        #loading { text-align: center; color: #999; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+    <div class="control-panel">
+        <input type="text" id="searchInput" class="search-box" placeholder="🔍 搜尋學校、系所 (如: 逢甲、廢水、南臺、半導體)...">
+        
+        <div class="filter-group" id="regionFilters">
+            <button class="filter-btn active" data-region="All">全部顯示</button>
+            <button class="filter-btn" data-region="North">北部 (北北基/桃竹)</button>
+            <button class="filter-btn" data-region="Central">中部 (苗中彰雲)</button>
+            <button class="filter-btn" data-region="South">南部 (嘉南高屏)</button>
+            <button class="filter-btn" data-region="East">東部與其他</button>
+        </div>
+    </div>
+
+    <div id="loading">🚀 正在載入全台學校資料庫...</div>
+    <div class="grid" id="cardContainer"></div>
+
+<script>
+    const FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSe4zXWl64R6F6QwFp68ylX4PnDancNtl7PUHsP08kwv_vp_Sw/viewform?usp=pp_url";
+
+    // 資料庫：由北到南排序
+    // r: region (North, Central, South, East)
+    const staticData = [
+        // === 北部 (台北、新北、基隆) ===
+        { s: "國立臺灣大學", d: "電機工程學系", u: "ntu.html", c: "台北公館", t: "電漿電源,自動控制", cat: "elec", n: "博理館/電機二館", r: "North" },
+        { s: "國立臺灣大學", d: "材料科學與工程學系", u: "ntu.html", c: "台北公館", t: "石英,真空鍍膜", cat: "sci", n: "工綜館", r: "North" },
+        { s: "國立臺灣大學", d: "醫學工程學系", u: "ntu.html", c: "台北醫學院", t: "生醫器材", cat: "eng", n: "工綜館/醫學院", r: "North" },
+        { s: "國立臺灣科大", d: "機械工程系", u: "https://www.me.ntust.edu.tw/", c: "台北公館", t: "自動化,精密機械", cat: "eng", n: "產學合作多", r: "North" },
+        { s: "國立臺北科大", d: "環境工程與管理研究所", u: "https://iem.ntut.edu.tw/", c: "台北忠孝", t: "工業廢水,空污", cat: "env", n: "忠孝新生旁", r: "North" },
+        { s: "臺北醫大", d: "醫學工程學院", u: "https://tmu.edu.tw/", c: "台北信義", t: "生醫器材", cat: "food", n: "信義區", r: "North" },
+        { s: "輔仁大學", d: "物理學系", u: "fju.html", c: "新北新莊", t: "石英,光電", cat: "sci", n: "理工學院", r: "North" },
+        { s: "輔仁大學", d: "化學系", u: "fju.html", c: "新北新莊", t: "分析,廢水", cat: "sci", n: "積健樓", r: "North" },
+        { s: "淡江大學", d: "水資源及環境工程學系", u: "tku.html", c: "新北淡水", t: "水處理,流力", cat: "env", n: "工學院", r: "North" },
+        { s: "淡江大學", d: "航太工程學系", u: "tku.html", c: "新北淡水", t: "熱流,複材", cat: "eng", n: "工學院", r: "North" },
+        { s: "明志科大", d: "材料工程系", u: "https://mcut.edu.tw/", c: "新北泰山", t: "電池,薄膜,台塑", cat: "sci", n: "台塑體系", r: "North" },
+        { s: "東吳大學", d: "物理學系", u: "scu.html", c: "台北士林", t: "光電,教學實驗", cat: "sci", n: "外雙溪", r: "North" },
+        { s: "國立海洋大學", d: "系統工程與造船學系", u: "https://sys.ntou.edu.tw/", c: "基隆", t: "結構材料,腐蝕", cat: "eng", n: "工學院", r: "North" },
+
+        // === 北部 (桃園、新竹) ===
+        { s: "國立中央大學", d: "光電科學與工程學系", u: "https://optics.ncu.edu.tw/", c: "桃園中壢", t: "光學鍍膜,雷射", cat: "elec", n: "光電大樓", r: "North" },
+        { s: "中原大學", d: "薄膜技術研發中心", u: "cycu.html", c: "桃園中壢", t: "過濾,水處理", cat: "sci", n: "世界級中心", r: "North" },
+        { s: "中原大學", d: "電機工程學系", u: "cycu.html", c: "桃園中壢", t: "電漿應用", cat: "elec", n: "電學大樓", r: "North" },
+        { s: "長庚大學", d: "機械工程學系", u: "https://mech.cgu.edu.tw/", c: "桃園龜山", t: "醫工,精密加工", cat: "eng", n: "台塑體系", r: "North" },
+        { s: "龍華科大", d: "半導體工程系", u: "https://lhu.edu.tw/", c: "桃園龜山", t: "封裝測試", cat: "elec", n: "", r: "North" },
+        { s: "國立清華大學", d: "動力機械工程學系", u: "https://pme.nthu.edu.tw/", c: "新竹", t: "機電整合,自動化", cat: "eng", n: "工學院", r: "North" },
+        { s: "國立清華大學", d: "生醫工程與環境科學系", u: "https://bme.nthu.edu.tw/", c: "新竹", t: "廢水處理,核工", cat: "env", n: "原子爐設備", r: "North" },
+        { s: "國立陽明交大", d: "電子研究所", u: "https://dee.nycu.edu.tw/", c: "新竹", t: "半導體,微影,蝕刻", cat: "elec", n: "台積電重點", r: "North" },
+
+        // === 中部 (苗栗、台中) ===
+        { s: "國立聯合大學", d: "環境與安全衛生工程系", u: "https://cesh.nuu.edu.tw/", c: "苗栗", t: "工安,環工", cat: "env", n: "二坪山", r: "Central" },
+        { s: "國立中興大學", d: "環境工程學系", u: "https://env.nchu.edu.tw/", c: "台中南區", t: "廢水,土壤復育", cat: "env", n: "工學院", r: "Central" },
+        { s: "逢甲大學", d: "水利工程與資源保育學系", u: "fcu.html", c: "台中西屯", t: "大型水利,流力", cat: "env", n: "土木水利館", r: "Central" },
+        { s: "逢甲大學", d: "機械與電腦輔助工程系", u: "fcu.html", c: "台中西屯", t: "精密加工", cat: "eng", n: "工學館", r: "Central" },
+        { s: "東海大學", d: "環境科學與工程學系", u: "thu.html", c: "台中西屯", t: "環工,廢水", cat: "env", n: "重視環保", r: "Central" },
+        { s: "國立勤益科大", d: "冷凍空調與能源系", u: "https://ncut.edu.tw/", c: "台中太平", t: "節能設備,機電", cat: "eng", n: "", r: "Central" },
+        { s: "國立臺中科大", d: "護理/美容系", u: "https://www.nutc.edu.tw/", c: "台中三民", t: "生技,實驗室", cat: "food", n: "三民校區", r: "Central" },
+        { s: "中國醫大", d: "職業安全與衛生學系", u: "https://cmu.edu.tw/", c: "台中水湳", t: "環安衛,毒物", cat: "env", n: "水湳校區", r: "Central" },
+        { s: "中山醫大", d: "醫學影像暨放射科學系", u: "https://csmu.edu.tw/", c: "台中南區", t: "放射設備", cat: "elec", n: "南區", r: "Central" },
+        { s: "朝陽科大", d: "環境工程與管理系", u: "https://cyut.edu.tw/", c: "台中霧峰", t: "環境檢測", cat: "env", n: "", r: "Central" },
+
+        // === 中部 (雲林、嘉義) ===
+        { s: "國立雲林科大", d: "環境事故應變諮詢中心", u: "https://yuntech.edu.tw/", c: "雲林斗六", t: "毒化災,環安", cat: "env", n: "重點單位", r: "Central" },
+        { s: "國立虎尾科大", d: "機械與電腦輔助工程系", u: "https://nfu.edu.tw/", c: "雲林虎尾", t: "精密機械,CNC", cat: "eng", n: "機台大戶", r: "Central" },
+        { s: "國立中正大學", d: "機械工程學系", u: "https://depthme.ccu.edu.tw/", c: "嘉義民雄", t: "精密加工,機台", cat: "eng", n: "工學院一館", r: "Central" },
+        { s: "國立嘉義大學", d: "生物機電工程學系", u: "https://ncyu.edu.tw/", c: "嘉義蘭潭", t: "自動控制", cat: "eng", n: "蘭潭校區", r: "Central" },
+
+        // === 南部 (台南) ===
+        { s: "國立成功大學", d: "環境工程學系", u: "https://ev.ncku.edu.tw/", c: "台南東區", t: "廢水處理,水質", cat: "env", n: "核心客戶", r: "South" },
+        { s: "國立成功大學", d: "物理學系", u: "https://www.phys.ncku.edu.tw/", c: "台南東區", t: "石英管,真空", cat: "sci", n: "耗材量大", r: "South" },
+        { s: "南臺科大", d: "半導體與光電工程系", u: "stust.html", c: "台南永康", t: "半導體,光電檢測", cat: "elec", n: "原光電系", r: "South" },
+        { s: "南臺科大", d: "電子工程系", u: "stust.html", c: "台南永康", t: "IC設計,系統", cat: "elec", n: "E棟", r: "South" },
+        { s: "南臺科大", d: "化材系", u: "stust.html", c: "台南永康", t: "廢水,材料", cat: "sci", n: "J棟", r: "South" },
+        { s: "崑山科大", d: "環境工程系", u: "https://ksu.edu.tw/", c: "台南永康", t: "廢水代操作", cat: "env", n: "環工強校", r: "South" },
+        { s: "國立臺南大學", d: "綠色能源科技學系", u: "https://nutn.edu.tw/", c: "台南東區", t: "太陽能,電池", cat: "sci", n: "榮譽校區", r: "South" },
+
+        // === 南部 (高雄、屏東) ===
+        { s: "國立中山大學", d: "材料與光電科學學系", u: "https://moe.nsysu.edu.tw/", c: "高雄鼓山", t: "半導體材料,光電", cat: "sci", n: "理工大樓", r: "South" },
+        { s: "國立高雄科大", d: "環境工程系", u: "https://nkust.edu.tw/", c: "高雄楠梓", t: "水處理,廢棄物", cat: "env", n: "第一校區", r: "South" },
+        { s: "國立高雄大學", d: "化學工程與材料工程學系", u: "https://cme.nuk.edu.tw/", c: "高雄楠梓", t: "高分子,綠色製程", cat: "sci", n: "工學院", r: "South" },
+        { s: "高雄醫大", d: "醫藥暨應用化學系", u: "https://kmu.edu.tw/", c: "高雄三民", t: "藥物合成,分析", cat: "sci", n: "", r: "South" },
+        { s: "正修科大", d: "環境毒物與新興污染物中心", u: "https://csu.edu.tw/", c: "高雄鳥松", t: "超微量分析", cat: "env", n: "檢測大戶", r: "South" },
+        { s: "國立屏東科大", d: "環境工程與科學系", u: "https://ev.npust.edu.tw/", c: "屏東內埔", t: "廢水處理,土壤", cat: "env", n: "工學院", r: "South" },
+        { s: "國立屏東科大", d: "生物機電工程系", u: "https://bme.npust.edu.tw/", c: "屏東內埔", t: "農業自動化,感測", cat: "eng", n: "工學院", r: "South" },
+
+        // === 東部與其他 ===
+        { s: "國立東華大學", d: "材料科學與工程學系", u: "https://mse.ndhu.edu.tw/", c: "花蓮", t: "奈米材料", cat: "sci", n: "理工二館", r: "East" },
+        { s: "慈濟大學", d: "醫學檢驗生物技術學系", u: "https://tcu.edu.tw/", c: "花蓮", t: "檢驗試劑", cat: "food", n: "", r: "East" },
+        { s: "國立臺東大學", d: "應用科學系", u: "https://nttu.edu.tw/", c: "台東", t: "化學,奈米", cat: "sci", n: "", r: "East" }
+    ];
+
+    const container = document.getElementById('cardContainer');
+    const loading = document.getElementById('loading');
+    let currentRegion = 'All';
+
+    window.onload = function() {
+        loading.style.display = 'none';
+        renderCards(staticData);
+    };
+
+    function renderCards(data) {
+        container.innerHTML = '';
+        data.forEach(item => {
+            const card = document.createElement('div');
+            card.className = `card ${item.cat}`;
+            card.dataset.search = (item.s + item.d + item.t + item.cat).toLowerCase();
+            
+            const tagsHtml = item.t.split(',').map(t => `<span class="tag">#${t}</span>`).join('');
+            const noteHtml = item.n ? `<div class="note">📝 ${item.n}</div>` : '';
+            
+            // 地區對應中文
+            let regionLabel = "";
+            if(item.r === "North") regionLabel = "北部";
+            else if(item.r === "Central") regionLabel = "中部";
+            else if(item.r === "South") regionLabel = "南部";
+            else if(item.r === "East") regionLabel = "東部";
+
+            card.innerHTML = `
+                <div class="header-row">
+                    <span class="school-badge">${item.s}</span>
+                    <span class="region-tag">${regionLabel}</span>
+                </div>
+                <div><span class="campus-badge">📍 ${item.c}</span></div>
+                <div class="dept">${item.d}</div>
+                <div class="tags">${tagsHtml}</div>
+                ${noteHtml}
+                <div class="btn-group">
+                    <a href="${item.u}" target="_blank" class="btn btn-web">🔗 官網</a>
+                    <button class="btn btn-rec" onclick="openRecord('${item.s}', '${item.d}')">✍️ 紀錄</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // 地區篩選功能
+    const buttons = document.querySelectorAll('.filter-btn');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // 移除所有 active
+            buttons.forEach(b => b.classList.remove('active'));
+            // 加上自己 active
+            btn.classList.add('active');
+            
+            const region = btn.dataset.region;
+            currentRegion = region;
+            
+            // 篩選資料
+            if (region === 'All') {
+                renderCards(staticData);
+            } else {
+                const filtered = staticData.filter(item => item.r === region);
+                renderCards(filtered);
+            }
+        });
+    });
+
+    // 搜尋功能 (支援地區篩選後的二次搜尋)
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const val = e.target.value.toLowerCase();
+        
+        // 先取得目前的資料集 (全部 或 某地區)
+        let sourceData = staticData;
+        if (currentRegion !== 'All') {
+            sourceData = staticData.filter(item => item.r === currentRegion);
+        }
+
+        // 針對該資料集進行關鍵字過濾
+        const filtered = sourceData.filter(item => {
+            const searchStr = (item.s + item.d + item.t + item.cat).toLowerCase();
+            return searchStr.includes(val);
+        });
+        
+        renderCards(filtered);
+    });
+
+    function openRecord(school, dept) {
+        const finalUrl = `${FORM_BASE_URL}&entry.1745001999=${encodeURIComponent(school)}&entry.1195856749=${encodeURIComponent(dept)}`;
+        window.open(finalUrl, '_blank');
+    }
+</script>
+
+</body>
+</html>

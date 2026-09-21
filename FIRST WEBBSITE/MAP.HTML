@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣大學導覽 - 首頁</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 全域變數與主題設定 --- */
+        :root {
+            /* ☀️ 日間模式：夢幻藍紫漸層 */
+            --bg-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            --card-bg: rgba(255, 255, 255, 0.85); 
+            --text-main: #2c3e50;      
+            --text-sub: #546e7a;       
+            --accent-color: #3498db;   
+            --border-color: rgba(255, 255, 255, 0.6); 
+            --btn-hover: #eef2f7;      
+            --shadow-color: rgba(0,0,0,0.08);
+        }
+
+        /* 🌙 夜間模式：深邃黑藍漸層 */
+        body.dark-mode {
+            --bg-gradient: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            --card-bg: rgba(30, 30, 30, 0.8);
+            --text-main: #e0e0e0;
+            --text-sub: #a0a0a0;
+            --accent-color: #64b5f6;
+            --border-color: rgba(255, 255, 255, 0.15);
+            --btn-hover: #2d2d2d;
+            --shadow-color: rgba(0,0,0,0.4);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 40px 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background 0.5s ease;
+            box-sizing: border-box;
+        }
+
+        /* 超大日夜切換按鈕 */
+        #theme-toggle {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            width: 80px;  
+            height: 80px; 
+            border-radius: 50%;
+            border: 4px solid white; 
+            background: var(--card-bg);
+            cursor: pointer;
+            font-size: 40px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            backdrop-filter: blur(5px);
+        }
+        #theme-toggle:hover { transform: scale(1.1) rotate(15deg); }
+
+        /* 標題區 */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+        }
+        h1.main-title {
+            font-size: 4rem;
+            margin: 0 0 20px 0;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        p.subtitle {
+            font-size: 1.6rem;
+            color: var(--text-main);
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        /* 跑馬燈 */
+        .marquee-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto 60px auto;
+            background: var(--card-bg);
+            border-radius: 50px;
+            padding: 15px 0;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        .marquee-content {
+            display: flex;
+            width: max-content;
+            animation: scroll-left 35s linear infinite;
+        }
+        .marquee-item {
+            font-size: 1.4rem;
+            padding: 0 30px;
+            color: var(--text-sub);
+            white-space: nowrap;
+            font-weight: 500;
+            display: flex; align-items: center; gap: 10px;
+        }
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* 卡片佈局 */
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            max-width: 1800px; 
+            margin: 0 auto;
+        }
+
+        .column {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            width: 320px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            flex-grow: 1;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(12px);
+            transition: transform 0.3s ease;
+        }
+        .column:hover { transform: translateY(-8px); }
+
+        .column h2 {
+            text-align: center;
+            color: var(--text-main);
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 15px;
+        }
+
+        /* 按鈕樣式 */
+        .btn-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            text-align: left;
+            padding: 16px 20px;
+            background-color: rgba(255,255,255,0.4); 
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-color);
+            color: white; 
+            border-color: var(--accent-color);
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn span.icon { 
+            font-size: 1.4rem; 
+            margin-right: 12px;
+            width: 35px;
+            text-align: center;
+        }
+        
+        .abbr {
+            color: var(--text-sub);
+            font-weight: 400;
+            font-size: 0.9em;
+            margin-left: auto;
+        }
+        .btn:hover .abbr { color: rgba(255,255,255,0.8); }
+
+    </style>
+</head>
+<body>
+
+    <button id="theme-toggle" title="切換模式">🌙</button>
+
+    <div class="hero-section">
+        <h1 class="main-title">台灣大學導覽 TW</h1>
+        <p class="subtitle">請選擇目標大學，開啟業務探索之旅</p>
+    </div>
+
+    <div class="marquee-wrapper">
+        <div class="marquee-content">
+            <div class="marquee-item">
+                尋找潛在客戶 ➜ 前進校園 ➜ 拜訪實驗室 ➜ 真空鍍膜 ➜ 化學合成 ➜ 材料分析 ➜ 光電檢測 ➜ 半導體製程 ➜ 廢水處理 ➜ 生物科技 ➜ 產學合作 ➜
+            </div>
+            <div class="marquee-item">
+                尋找潛在客戶 ➜ 前進校園 ➜ 拜訪實驗室 ➜ 真空鍍膜 ➜ 化學合成 ➜ 材料分析 ➜ 光電檢測 ➜ 半導體製程 ➜ 廢水處理 ➜ 生物科技 ➜ 產學合作 ➜
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="column">
+            <h2>🏆 頂尖四大</h2>
+            <div class="btn-list">
+                <a href="ntu.html" class="btn"><span class="icon">🏰</span> 國立臺灣大學 <span class="abbr">(NTU)</span></a>
+                <a href="nthu.html" class="btn"><span class="icon">🐼</span> 國立清華大學 <span class="abbr">(NTHU)</span></a>
+                <a href="nycu.html" class="btn"><span class="icon">💻</span> 國立陽明交大 <span class="abbr">(NYCU)</span></a>
+                <a href="ncku.html" class="btn"><span class="icon">🌳</span> 國立成功大學 <span class="abbr">(NCKU)</span></a>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>🔰 四中兩科</h2>
+            <div class="btn-list">
+                <a href="ncu.html" class="btn"><span class="icon">🌲</span> 國立中央大學 <span class="abbr">(NCU)</span></a>
+                <a href="nchu.html" class="btn"><span class="icon">🦆</span> 國立中興大學 <span class="abbr">(NCHU)</span></a>
+                <a href="ccu.html" class="btn"><span class="icon">🍍</span> 國立中正大學 <span class="abbr">(CCU)</span></a>
+                <a href="nsysu.html" class="btn"><span class="icon">🌊</span> 國立中山大學 <span class="abbr">(NSYSU)</span></a>
+                <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 5px 0;">
+                <a href="ntust.html" class="btn"><span class="icon">🦁</span> 國立臺灣科大 <span class="abbr">(NTUST)</span></a>
+                <a href="ntut.html" class="btn"><span class="icon">🏭</span> 國立臺北科大 <span class="abbr">(NTUT)</span></a>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>🛠️ 國立科大</h2>
+            <div class="btn-list">
+                <a href="ncut.html" class="btn"><span class="icon">🧊</span> 國立勤益科大 <span class="abbr">(NCUT)</span></a>
+                <a href="ntcust.html" class="btn"><span class="icon">🏪</span> 國立臺中科大 <span class="abbr">(NTCUST)</span></a>
+                <a href="yuntech.html" class="btn"><span class="icon">☁️</span> 國立雲林科大 <span class="abbr">(YunTech)</span></a>
+                <a href="nfu.html" class="btn"><span class="icon">✈️</span> 國立虎尾科大 <span class="abbr">(NFU)</span></a>
+                <a href="nkust.html" class="btn"><span class="icon">⚓</span> 國立高雄科大 <span class="abbr">(NKUST)</span></a>
+                <a href="npust.html" class="btn"><span class="icon">🐮</span> 國立屏東科大 <span class="abbr">(NPUST)</span></a>
+                <a href="npu.html" class="btn"><span class="icon">🏖️</span> 國立澎湖科大 <span class="abbr">(NPU)</span></a>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>📍 地名大學</h2>
+            <div class="btn-list">
+                <a href="ntou.html" class="btn"><span class="icon">🚢</span> 國立海洋大學 <span class="abbr">(NTOU)</span></a>
+                <a href="ntpu.html" class="btn"><span class="icon">🪁</span> 國立臺北大學 <span class="abbr">(NTPU)</span></a>
+                <a href="nuu.html" class="btn"><span class="icon">⛰️</span> 國立聯合大學 <span class="abbr">(NUU)</span></a>
+                <a href="ncnu.html" class="btn"><span class="icon">🌸</span> 國立暨南大學 <span class="abbr">(NCNU)</span></a>
+                <a href="ncyu.html" class="btn"><span class="icon">⚾</span> 國立嘉義大學 <span class="abbr">(NCYU)</span></a>
+                <a href="nutn.html" class="btn"><span class="icon">🏛️</span> 國立臺南大學 <span class="abbr">(NUTN)</span></a>
+                <a href="nuk.html" class="btn"><span class="icon">☀️</span> 國立高雄大學 <span class="abbr">(NUK)</span></a>
+                <a href="nptu.html" class="btn"><span class="icon">⛰️</span> 國立屏東大學 <span class="abbr">(NPTU)</span></a>
+                <a href="ndhu.html" class="btn"><span class="icon">🏞️</span> 國立東華大學 <span class="abbr">(NDHU)</span></a>
+                <a href="nttu.html" class="btn"><span class="icon">🗿</span> 國立臺東大學 <span class="abbr">(NTTU)</span></a>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>🎓 師範教育</h2>
+            <div class="btn-list">
+                <a href="ntnu.html" class="btn"><span class="icon">🔔</span> 國立臺灣師大 <span class="abbr">(NTNU)</span></a>
+                <a href="ncue.html" class="btn"><span class="icon">🖋️</span> 國立彰化師大 <span class="abbr">(NCUE)</span></a>
+                <a href="nknu.html" class="btn"><span class="icon">🎨</span> 國立高雄師大 <span class="abbr">(NKNU)</span></a>
+                <a href="ntcu.html" class="btn"><span class="icon">📖</span> 國立臺中教育 <span class="abbr">(NTCU)</span></a>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>🏭 私立科大</h2>
+            <div class="btn-list">
+                <a href="https://www.mcut.edu.tw/" target="_blank" class="btn"><span class="icon">⚗️</span> 明志科大 <span class="abbr">(MCUT)</span></a>
+                <a href="stust.html" class="btn"><span class="icon">⚙️</span> 南臺科大 <span class="abbr">(STUST)</span></a>
+                <a href="https://www.ksu.edu.tw/" target="_blank" class="btn"><span class="icon">🌿</span> 崑山科大 <span class="abbr">(KSU)</span></a>
+                <a href="https://www.lhu.edu.tw/" target="_blank" class="btn"><span class="icon">🐉</span> 龍華科大 <span class="abbr">(LHU)</span></a>
+                <a href="https://web.cyut.edu.tw/" target="_blank" class="btn"><span class="icon">☀️</span> 朝陽科大 <span class="abbr">(CYUT)</span></a>
+                <a href="https://www.csu.edu.tw/" target="_blank" class="btn"><span class="icon">🔧</span> 正修科大 <span class="abbr">(CSU)</span></a>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>🏛️ 私立老牌</h2>
+            <div class="btn-list">
+                <a href="fju.html" class="btn"><span class="icon">✝️</span> 輔仁大學 <span class="abbr">(FJU)</span></a>
+                <a href="scu.html" class="btn"><span class="icon">⚖️</span> 東吳大學 <span class="abbr">(SCU)</span></a>
+                <a href="tku.html" class="btn"><span class="icon">🚢</span> 淡江大學 <span class="abbr">(TKU)</span></a>
+                <a href="thu.html" class="btn"><span class="icon">⛪</span> 東海大學 <span class="abbr">(THU)</span></a>
+                <a href="cycu.html" class="btn"><span class="icon">⚛️</span> 中原大學 <span class="abbr">(CYCU)</span></a>
+                <a href="fcu.html" class="btn"><span class="icon">🌃</span> 逢甲大學 <span class="abbr">(FCU)</span></a>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>🏛️ 私立老牌 (續)</h2>
+            <div class="btn-list">
+                <a href="yzu.html" class="btn"><span class="icon">📡</span> 元智大學 <span class="abbr">(YZU)</span></a>
+                <a href="isu.html" class="btn"><span class="icon">🎡</span> 義守大學 <span class="abbr">(ISU)</span></a>
+                <a href="usc.html" class="btn"><span class="icon">👗</span> 實踐大學 <span class="abbr">(USC)</span></a>
+                <a href="mcu.html" class="btn"><span class="icon">🗣️</span> 銘傳大學 <span class="abbr">(MCU)</span></a>
+                <a href="pccu.html" class="btn"><span class="icon">☁️</span> 文化大學 <span class="abbr">(PCCU)</span></a>
+                <a href="pu.html" class="btn"><span class="icon">🌿</span> 靜宜大學 <span class="abbr">(PU)</span></a>
+                <a href="au.html" class="btn"><span class="icon">🏛️</span> 亞洲大學 <span class="abbr">(AU)</span></a>
+                <a href="dyu.html" class="btn"><span class="icon">🏗️</span> 大葉大學 <span class="abbr">(DYU)</span></a>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>⚕️ 醫學大學</h2>
+            <div class="btn-list">
+                <a href="https://www.cgu.edu.tw/" target="_blank" class="btn"><span class="icon">🧬</span> 長庚大學 <span class="abbr">(CGU)</span></a>
+                <a href="https://www.tmu.edu.tw/" target="_blank" class="btn"><span class="icon">💊</span> 臺北醫大 <span class="abbr">(TMU)</span></a>
+                <a href="https://www.cmu.edu.tw/" target="_blank" class="btn"><span class="icon">🏥</span> 中國醫大 <span class="abbr">(CMU)</span></a>
+                <a href="https://www.kmu.edu.tw/" target="_blank" class="btn"><span class="icon">🩺</span> 高雄醫大 <span class="abbr">(KMU)</span></a>
+                <a href="https://www.csmu.edu.tw/" target="_blank" class="btn"><span class="icon">🦷</span> 中山醫大 <span class="abbr">(CSMU)</span></a>
+                <a href="https://www.tcu.edu.tw/" target="_blank" class="btn"><span class="icon">🤲</span> 慈濟大學 <span class="abbr">(TCU)</span></a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.textContent = '☀️';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                toggleBtn.textContent = '☀️';
+            } else {
+                localStorage.setItem('theme', 'light');
+                toggleBtn.textContent = '🌙';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>雲林科大 - 潛在客戶導覽</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* --- 全域設定 --- */
+        body {
+            /* 背景：雲嘉平原的陽光與綠意 */
+            background: linear-gradient(135deg, #FEF9E7 0%, #EAFAF1 100%) !important;
+            padding-bottom: 80px;
+            margin: 0;
+            font-size: 14px;
+            
+            /* ✨ 進場動畫：優雅浮現 ✨ */
+            animation: elegant-entry 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0;
+            transform-origin: center top;
+        }
+
+        @keyframes elegant-entry {
+            0% { opacity: 0; transform: scale(1.03) translateY(15px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* --- ✨ 核心設計：雲林綠能標題區 ✨ --- */
+        .yun-header-container {
+            position: relative;
+            width: 100%;
+            /* 標題區背景：從稻穗金過渡到科技綠 */
+            background: linear-gradient(to right, #F39C12, #27AE60);
+            padding: 30px 0; /* 高度適中 */
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 4px solid #145A32; /* 深綠底線 */
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+            overflow: hidden;
+        }
+
+        /* 標題內容區 */
+        .header-content {
+            z-index: 2;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        /* 大標題文字 */
+        h1.main-title {
+            margin: 0 0 15px 0;
+            font-size: 42px;
+            font-weight: 900;
+            color: #FFFFFF;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* --- ✨ 學校官網按鈕 (置頂) ✨ --- */
+        a.school-link-badge {
+            display: inline-flex;
+            align-items: center;
+            background: #FFFFFF; 
+            color: #1E8449; /* 深綠字 */
+            padding: 8px 24px;
+            border-radius: 50px;
+            border: 2px solid #FFFFFF;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            margin-bottom: 15px; /* 與下方資訊區隔開 */
+        }
+
+        a.school-link-badge:hover {
+            transform: translateY(-3px) scale(1.05);
+            background: #F1C40F; /* 金色背景 */
+            color: #145A32;
+            border-color: #F1C40F;
+        }
+
+        /* --- 易複製資訊區 (統編/地址) --- */
+        .info-badge-container {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .copy-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 6px 16px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 14px;
+            color: #FFFFFF;
+            cursor: copy;
+            transition: all 0.2s;
+        }
+
+        .copy-badge:hover {
+            background: #FFFFFF;
+            transform: translateY(-2px);
+            color: #27AE60;
+            border-color: #FFFFFF;
+        }
+        .copy-badge:hover .badge-label { color: #27AE60; }
+        
+        /* ⚠️ 關鍵設定：點擊即全選 */
+        .copy-text { 
+            font-weight: 700; 
+            margin-left: 6px; 
+            font-family: monospace; 
+            font-size: 15px;
+            user-select: all; /* 點擊即全選 */
+            cursor: copy;
+        }
+        .badge-label { user-select: none; color: #EAFAF1; font-weight: 500;}
+
+        /* --- 裝飾與動畫 --- */
+        .yun-deco {
+            position: absolute; top: 0; bottom: 0; width: 180px;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0.2; pointer-events: none;
+        }
+        .deco-left { left: 0; } .deco-right { right: 0; }
+        .yun-svg { width: 100%; height: 100%; fill: none; stroke: #FEF9E7; stroke-width: 1.5; }
+
+        .animation-stage {
+            background-color: #27AE60 !important; border-color: #ABEBC6;
+            margin-top: 15px; padding: 5px 0;
+        }
+        .runner-character { text-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 24px !important; }
+
+        /* 分類標題 */
+        h3 {
+            background: #FFFFFF; padding: 8px 20px; border-radius: 8px;
+            margin-top: 15px; margin-bottom: 20px;
+            font-size: 20px; font-weight: 800; color: #1E8449;
+            display: inline-block; border-left: 5px solid #27AE60;
+            border: 1px solid rgba(39, 174, 96, 0.2); border-left-color: #27AE60;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.15);
+        }
+
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px; align-items: start; width: 92%; max-width: 1200px;
+            margin: 0 auto; margin-bottom: 50px;
+        }
+
+        /* 卡片樣式 */
+        a.dept-card {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            width: auto; height: auto; min-height: 100px;
+            padding: 20px 15px; background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #ABEBC6; border-radius: 12px;
+            transition: all 0.2s; text-align: center; text-decoration: none;
+            box-shadow: 5px 5px 15px rgba(39, 174, 96, 0.08);
+        }
+        a.dept-card:hover {
+            transform: translateY(-5px) scale(1.01); background: white;
+            border-color: #27AE60; box-shadow: 10px 15px 30px rgba(39, 174, 96, 0.2);
+        }
+        .card-title { font-size: 18px; margin-bottom: 8px; color: #145A32; font-weight: 700; }
+        a.dept-card:hover .card-title { color: #27AE60; }
+        .dept-location {
+            font-size: 13px; color: #666; background: rgba(234, 250, 241, 0.8);
+            padding: 4px 10px; border-radius: 4px; margin-top: 4px;
+            user-select: none; font-weight: 500;
+        }
+        .loc-copy { user-select: all; cursor: copy; }
+
+        .env-card { background: linear-gradient(135deg, #E8F8F5 0%, #D4EFDF 100%); border-color: #2ECC71 !important; }
+        .env-card:hover { border-color: #27AE60 !important; }
+        .env-card .card-title { color: #196F3D; }
+
+        .tech-card { background: linear-gradient(135deg, #FEF9E7 0%, #FDEBD0 100%); border-color: #F39C12 !important; }
+        .tech-card:hover { border-color: #D35400 !important; }
+        .tech-card .card-title { color: #D35400; }
+    </style>
+</head>
+<body>
+
+    <div class="yun-header-container">
+        
+        <div class="yun-deco deco-left">
+            <svg class="yun-svg" viewBox="0 0 100 200"><line x1="50" y1="50" x2="50" y2="150" stroke-width="2"/><path d="M50,50 L20,30 M50,50 L80,30 M50,50 L50,10" /></svg>
+        </div>
+
+        <div class="header-content">
+            <h1 class="main-title">國立雲林科技大學 (YunTech)</h1>
+            
+            <div>
+                <a href="https://www.yuntech.edu.tw/" target="_blank" class="school-link-badge">🏫 學校官網</a>
+            </div>
+
+            <div class="info-badge-container">
+                <div class="copy-badge" title="點擊複製統編">
+                    <span class="badge-label">統編：</span><span class="copy-text">06195262</span>
+                </div>
+                <div class="copy-badge" title="點擊複製地址">
+                    <span class="badge-label">地址：</span><span class="copy-text">64002 雲林縣斗六市大學路3段123號</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="yun-deco deco-right">
+            <svg class="yun-svg" viewBox="0 0 100 200"><circle cx="70" cy="40" r="15" /><line x1="70" y1="20" x2="70" y2="10" /><line x1="70" y1="60" x2="70" y2="70" /></svg>
+        </div>
+    </div>
+
+    <div class="animation-stage"><div class="runner-character">🏃‍♂️ 🌾 💧 ⚙️</div></div>
+
+    <h3>⚗️ 環境與化材 (廢水/電漿)</h3>
+    <div class="card-grid">
+        <a href="https://ues.yuntech.edu.tw/" target="_blank" class="dept-card env-card">
+            <span class="card-title">💧 環境與安全衛生工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工程學院</span></span>
+        </a>
+        <a href="https://che.yuntech.edu.tw/" target="_blank" class="dept-card env-card">
+            <span class="card-title">🧱 化學工程與材料工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工程學院</span></span>
+        </a>
+    </div>
+
+    <h3>⚙️ 機電與工程 (設備/自動化)</h3>
+    <div class="card-grid">
+        <a href="https://me.yuntech.edu.tw/" target="_blank" class="dept-card tech-card">
+            <span class="card-title">🔧 機械工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工程學院</span></span>
+        </a>
+        <a href="https://uee.yuntech.edu.tw/" target="_blank" class="dept-card tech-card">
+            <span class="card-title">🔌 電機工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工程學院</span></span>
+        </a>
+    </div>
+
+    <h3>⚡ 電子與光電 (半導體/檢測)</h3>
+    <div class="card-grid">
+        <a href="https://uel.yuntech.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">💡 電子工程系 (光電組)</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工程學院</span></span>
+        </a>
+        <a href="https://etg.yuntech.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🔬 工程科技研究所</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工程學院</span></span>
+        </a>
+    </div>
+
+    <a href="index.html" style="background-color: #27AE60; color: white; width: 150px; padding: 10px; border-radius: 25px; font-size: 16px; display: inline-block;">
+        ⬅️ 回到首頁
+    </a>
+</body>
+</html>

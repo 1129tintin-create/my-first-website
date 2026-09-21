@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>陽明交大 - 潛在客戶導覽</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* --- 全域設定 --- */
+        body {
+            /* 背景：科技黑與生醫藍的漸層 */
+            background: linear-gradient(135deg, #ECEFF1 0%, #E8EAF6 100%) !important;
+            padding-bottom: 80px;
+            margin: 0;
+            font-size: 14px;
+            animation: elegant-entry 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes elegant-entry {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 核心設計：NYCU 標題區 --- */
+        .nycu-header-container {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(to right, #000000, #1A237E); /* 交大黑 + 陽明藍 */
+            padding: 30px 0;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 5px solid #00BCD4; /* 未來科技青 */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            flex-direction: column;
+        }
+
+        .header-content { text-align: center; z-index: 2; padding: 0 20px; width: 100%; max-width: 1000px; }
+
+        h1.main-title {
+            margin: 0 0 15px 0;
+            font-size: 40px;
+            font-weight: 900;
+            color: #FFFFFF;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* 學校官網按鈕 (置頂) */
+        a.school-link-badge {
+            display: inline-flex;
+            align-items: center;
+            background: #00BCD4;
+            color: #FFFFFF;
+            padding: 10px 30px; /* 加大按鈕 */
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 18px; /* 加大字體 */
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: 0.2s;
+            margin-bottom: 20px;
+        }
+        a.school-link-badge:hover { transform: scale(1.05); background: #FFFFFF; color: #1A237E; }
+
+        /* --- 資訊區 (統編/地址) - 字體放大版 --- */
+        .info-badge-container { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 5px; }
+        
+        .copy-badge {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            padding: 8px 18px; /* 加大內距 */
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.3); /* 加粗邊框 */
+            color: #FFFFFF;
+            font-size: 16px; /* 基礎字體放大 */
+            cursor: copy;
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+        }
+        .copy-badge:hover { background: #FFFFFF; color: #1A237E; border-color: #FFFFFF; transform: translateY(-2px); }
+        
+        .copy-text { 
+            font-weight: 800; 
+            margin-left: 8px; 
+            user-select: all; 
+            font-size: 18px; 
+            letter-spacing: 0.5px;
+        }
+        .badge-label { font-weight: 600; opacity: 1; font-size: 16px; }
+
+        /* 分類標題 */
+        h3 {
+            background: #FFFFFF; padding: 10px 25px; border-radius: 8px;
+            margin: 35px auto 20px auto; width: fit-content;
+            font-size: 22px; font-weight: 800; color: #1A237E;
+            border-left: 8px solid #00BCD4;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; width: 92%; max-width: 1200px; margin: 0 auto;
+        }
+
+        /* 卡片設定 */
+        a.dept-card {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 25px 15px; background: white;
+            border: 1px solid #CFD8DC; border-radius: 15px;
+            transition: 0.2s; text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        a.dept-card:hover { transform: translateY(-5px); border-color: #1A237E; box-shadow: 0 10px 25px rgba(26, 35, 126, 0.15); }
+
+        .card-title { font-size: 18px; color: #1A237E; font-weight: 800; margin-bottom: 8px; }
+        .campus-tag {
+            font-size: 13px; color: #555; background: #E8EAF6;
+            padding: 4px 12px; border-radius: 4px; font-weight: 700;
+        }
+
+        /* 特殊卡片色系 */
+        .bio-card { border-top: 5px solid #009688 !important; } /* 生醫/環工綠 */
+        .sci-card { border-top: 5px solid #673AB7 !important; } /* 理學紫 */
+        .eng-card { border-top: 5px solid #FF9800 !important; } /* 工程橘 */
+        .elec-card { border-top: 5px solid #2962FF !important; } /* 電資藍 */
+        .green-card { border-top: 5px solid #76FF03 !important; } /* 綠能螢光綠 */
+
+    </style>
+</head>
+<body>
+
+    <div class="nycu-header-container">
+        <div class="header-content">
+            <h1 class="main-title">國立陽明交通大學 (NYCU)</h1>
+            
+            <a href="https://www.nycu.edu.tw/" target="_blank" class="school-link-badge">🏫 學校官網</a>
+            
+            <div class="info-badge-container">
+                <div class="copy-badge" title="點擊複製"><span class="badge-label">統編：</span><span class="copy-text">87557573</span></div>
+                <div class="copy-badge" title="點擊複製"><span class="badge-label">新竹光復：</span><span class="copy-text">新竹市大學路1001號</span></div>
+            </div>
+            <div class="info-badge-container">
+                <div class="copy-badge" title="點擊複製"><span class="badge-label">台北陽明：</span><span class="copy-text">台北市北投區立農街二段155號</span></div>
+                <div class="copy-badge" title="點擊複製"><span class="badge-label">台南歸仁：</span><span class="copy-text">台南市歸仁區高發三路301號</span></div>
+            </div>
+        </div>
+    </div>
+
+    <h3>☀️ 台南校區 (光電與綠能)</h3>
+    <div class="card-grid">
+        <a href="https://ai.nycu.edu.tw/" target="_blank" class="dept-card green-card">
+            <span class="card-title">🔋 智慧科學暨綠能學院</span>
+            <span class="campus-tag">📍 台南歸仁 (綠能材料/儲能)</span>
+        </a>
+        <a href="https://cop.nycu.edu.tw/" target="_blank" class="dept-card elec-card">
+            <span class="card-title">🔬 光電學院</span>
+            <span class="campus-tag">📍 台南歸仁 (產學合作核心)</span>
+        </a>
+        <a href="https://dop.nycu.edu.tw/" target="_blank" class="dept-card elec-card">
+            <span class="card-title">💡 光電工程學系</span>
+            <span class="campus-tag">📍 新竹光復 / 台南歸仁</span>
+        </a>
+    </div>
+
+    <h3>🥗 生醫、食安與環工</h3>
+    <div class="card-grid">
+        <a href="https://www.nycu.edu.tw/ifshra/" target="_blank" class="dept-card bio-card">
+            <span class="card-title">🔬 食品安全及健康風險評估所</span>
+            <span class="campus-tag">📍 台北陽明 (電漿殺菌應用)</span>
+        </a>
+        <a href="https://nycubme.nycu.edu.tw/" target="_blank" class="dept-card bio-card">
+            <span class="card-title">🩺 生物醫學工程學系</span>
+            <span class="campus-tag">📍 台北陽明 (生醫材料/電子)</span>
+        </a>
+        <a href="https://cbmse.nycu.edu.tw/products_detail/60" target="_blank" class="dept-card bio-card">
+            <span class="card-title">🧬 生醫光電研究所</span>
+            <span class="campus-tag">📍 台北陽明 / 新竹光復</span>
+        </a>
+        <a href="https://ev.nycu.edu.tw/" target="_blank" class="dept-card bio-card">
+            <span class="card-title">💧 環境工程研究所</span>
+            <span class="campus-tag">📍 新竹光復 (電漿水處理)</span>
+        </a>
+    </div>
+
+    <h3>⚗️ 理學與材料</h3>
+    <div class="card-grid">
+        <a href="https://ep.nycu.edu.tw/" target="_blank" class="dept-card sci-card">
+            <span class="card-title">⚛️ 電子物理系</span>
+            <span class="campus-tag">📍 新竹光復 (石英管/真空)</span>
+        </a>
+        <a href="https://dac.nycu.edu.tw/" target="_blank" class="dept-card sci-card">
+            <span class="card-title">🧪 應用化學系</span>
+            <span class="campus-tag">📍 新竹光復</span>
+        </a>
+        <a href="https://mse.nycu.edu.tw/" target="_blank" class="dept-card eng-card">
+            <span class="card-title">🧱 材料科學與工程學系</span>
+            <span class="campus-tag">📍 新竹光復</span>
+        </a>
+    </div>
+
+    <h3>⚡ 電資與工程</h3>
+    <div class="card-grid">
+        <a href="https://iee.nycu.edu.tw/" target="_blank" class="dept-card elec-card">
+            <span class="card-title">💻 電子研究所</span>
+            <span class="campus-tag">📍 新竹光復 (半導體核心)</span>
+        </a>
+        <a href="https://dee.nycu.edu.tw/" target="_blank" class="dept-card elec-card">
+            <span class="card-title">🔌 電機工程學系</span>
+            <span class="campus-tag">📍 新竹光復</span>
+        </a>
+        <a href="https://me.nycu.edu.tw/" target="_blank" class="dept-card eng-card">
+            <span class="card-title">🔧 機械工程學系</span>
+            <span class="campus-tag">📍 新竹光復</span>
+        </a>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="index.html" style="background-color: #1A237E; color: white; width: 150px; padding: 12px; border-radius: 25px; font-size: 16px; display: inline-block; text-decoration: none;">
+            ⬅️ 回到首頁
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>東吳大學 - 業務重點導覽</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+
+        :root {
+            /* 東吳配色 */
+            --scu-red: #C8102E;        
+            --scu-black: #111111;      
+            --bg-color: #f8f8f8;       
+            --text-color: #333;
+            --card-shadow: 0 8px 20px rgba(200, 16, 46, 0.15);
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0; padding: 0; color: var(--text-color);
+            background-image: repeating-linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0), repeating-linear-gradient(45deg, #f0f0f0 25%, #f8f8f8 25%, #f8f8f8 75%, #f0f0f0 75%, #f0f0f0);
+            background-position: 0 0, 10px 10px;
+            background-size: 20px 20px;
+        }
+
+        .nav-bar {
+            background: var(--scu-black);
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .back-btn {
+            color: white; text-decoration: none; font-weight: bold;
+            display: flex; align-items: center; gap: 8px; width: fit-content;
+            font-size: 1rem; transition: color 0.2s;
+        }
+        .back-btn:hover { color: var(--scu-red); }
+
+        header {
+            background: linear-gradient(135deg, var(--scu-black) 0%, #333 100%);
+            color: white;
+            padding: 50px 20px 70px;
+            text-align: center;
+            border-bottom: 8px solid var(--scu-red);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .bg-decoration {
+            position: absolute; top: -30px; right: -30px;
+            font-size: 18rem; opacity: 0.1; color: var(--scu-red);
+            transform: rotate(20deg); pointer-events: none;
+        }
+
+        h1 {
+            font-size: 3.5rem; margin: 0; font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 4px 4px 0px var(--scu-red);
+        }
+        
+        .eng-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem; color: #ccc;
+            margin-top: 10px; letter-spacing: 3px;
+        }
+
+        .info-bar {
+            display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+            margin-top: 35px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid #555;
+            padding: 12px 28px; border-radius: 4px; 
+            cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; gap: 10px;
+            color: white; font-weight: bold; position: relative;
+            font-size: 1.05rem;
+        }
+
+        .info-card:hover {
+            background: var(--scu-red); border-color: var(--scu-red);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(200, 16, 46, 0.4);
+        }
+        .info-card:active { transform: scale(0.96); }
+        
+        .tooltip {
+            position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%);
+            background: var(--scu-black); color: #fff; padding: 6px 12px; border-radius: 4px;
+            font-size: 13px; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+        }
+        .info-card.copied .tooltip { opacity: 1; }
+
+        .web-btn {
+            background: var(--scu-red); color: white;
+            text-decoration: none; padding: 12px 32px; border-radius: 4px;
+            font-weight: 900; box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px;
+            font-size: 1.1rem;
+        }
+        .web-btn:hover { background: white; color: var(--scu-red); transform: translateY(-3px); }
+
+        .main-container {
+            margin: 50px auto 80px; 
+            max-width: 1300px; 
+            padding: 0 20px;
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 35px;
+            align-items: flex-start;
+        }
+
+        .dept-group {
+            background: white; border-radius: 8px;
+            width: 360px; flex-grow: 1; max-width: 400px;
+            box-shadow: var(--card-shadow);
+            border-top: 6px solid var(--scu-red);
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out;
+            transition: transform 0.3s ease;
+        }
+        .dept-group:hover { transform: translateY(-5px); }
+
+        .group-header {
+            background: #fff0f0; padding: 25px 20px; text-align: center;
+            border-bottom: 1px solid #ffe0e0;
+        }
+        .group-header h2 { margin: 0; color: var(--scu-black); font-size: 1.6rem; font-weight: 800; }
+        .group-header p { margin: 8px 0 0; font-size: 0.95rem; color: #666; }
+
+        .dept-list { padding: 15px; }
+
+        .dept-link {
+            display: flex; align-items: center;
+            padding: 18px 20px; margin: 12px 0;
+            background: white; border: 1px solid #eee;
+            border-left: 4px solid #ccc;
+            border-radius: 4px; text-decoration: none; color: #444;
+            transition: all 0.2s;
+            position: relative; overflow: hidden;
+        }
+
+        .dept-link:hover {
+            border-left-color: var(--scu-red);
+            background: #fffbfb;
+            transform: translateX(5px);
+            box-shadow: 4px 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .dept-link i {
+            font-size: 1.8rem; width: 45px; text-align: center;
+            color: var(--scu-red); margin-right: 15px;
+        }
+        
+        .dept-name { font-weight: 700; font-size: 1.15rem; display: block; color: #222; }
+        .dept-desc { font-size: 0.9rem; color: #777; font-weight: normal; margin-top: 4px; display: block; }
+
+        .tag {
+            font-size: 0.8rem; padding: 4px 10px; border-radius: 4px;
+            margin-left: auto; font-weight: bold; white-space: nowrap;
+        }
+        .tag-black { background: #333; color: white; } 
+        .tag-red { background: #ffebee; color: #c62828; }  
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .info-bar { flex-direction: column; align-items: center; }
+            .info-card { width: 90%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> 回首頁 (Dashboard)</a>
+    </div>
+
+    <header>
+        <i class="fas fa-university bg-decoration"></i>
+        <h1>東吳大學</h1>
+        <div class="eng-title">Soochow University</div>
+        
+        <div class="info-bar">
+            <div class="web-btn" onclick="window.open('https://www.scu.edu.tw/', '_blank')" style="cursor: pointer;">
+                <i class="fas fa-globe"></i> 學校官網
+            </div>
+            
+            <div class="info-card" onclick="copyText(this, '03701202')">
+                <i class="fas fa-file-invoice"></i> 
+                <span>統編：03701202</span>
+                <div class="tooltip">已複製統編！</div>
+            </div>
+            
+            <div class="info-card" onclick="copyText(this, '111002 臺北市士林區臨溪路70號')">
+                <i class="fas fa-map-marker-alt"></i> 
+                <span>外雙溪：北市士林區臨溪路70號</span>
+                <div class="tooltip">已複製地址！</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+
+        <div class="dept-group">
+            <div class="group-header">
+                <h2><i class="fas fa-atom"></i> 物理學系</h2>
+                <p>真空技術、光電檢測、石英加工需求</p>
+            </div>
+            <div class="dept-list">
+                <a href="https://www.phys.scu.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-microscope"></i>
+                    <div>
+                        <span class="dept-name">物理學系</span>
+                        <span class="dept-desc">光電物理實驗室、材料製程</span>
+                    </div>
+                    <span class="tag tag-black">石英/光電</span>
+                </a>
+                <div style="padding: 10px; font-size: 0.85rem; color: #666; background: #fafafa; margin: 10px; border-radius: 4px;">
+                    <i class="fas fa-info-circle"></i> <b>業務筆記：</b> 東吳無機械/電機系。凡涉及切削、真空幫浦維護、電子顯微鏡等需求，請直接對接物理系。
+                </div>
+            </div>
+        </div>
+
+        <div class="dept-group">
+            <div class="group-header">
+                <h2><i class="fas fa-flask"></i> 化學系</h2>
+                <p>化學藥劑、廢水處理、材料分析</p>
+            </div>
+            <div class="dept-list">
+                <a href="https://web-ch.scu.edu.tw/chem" target="_blank" class="dept-link">
+                    <i class="fas fa-vial"></i>
+                    <div>
+                        <span class="dept-name">化學系</span>
+                        <span class="dept-desc">有機合成、材料化學、分析化學</span>
+                    </div>
+                    <span class="tag tag-red">材料/藥劑</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="dept-group">
+            <div class="group-header">
+                <h2><i class="fas fa-bacterium"></i> 微生物學系</h2>
+                <p>廢水菌種、發酵工程、環境生物</p>
+            </div>
+            <div class="dept-list">
+                <a href="https://microbiology.scu.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-dna"></i>
+                    <div>
+                        <span class="dept-name">微生物學系</span>
+                        <span class="dept-desc">全台唯一獨立微生物系，廢水處理強</span>
+                    </div>
+                    <span class="tag tag-red">生技/廢水</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function copyText(element, text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            element.classList.add('copied');
+            setTimeout(() => {
+                element.classList.remove('copied');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>台大電子所 - 實驗室黃頁</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 專屬樣式：表格優化 */
+        body { padding-bottom: 50px; }
+        table {
+            width: 95%;
+            max-width: 1000px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            vertical-align: middle;
+        }
+        th {
+            color: white;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+        .header-nano { background-color: #CD5C5C; } 
+        .header-ics { background-color: #2980b9; }  
+
+        tr:hover { background-color: rgba(255,255,255,0.95); }
+        
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin: 2px;
+            font-weight: 500;
+        }
+        .tag-hot { background-color: #ff7675; color: white; } 
+        .tag-norm { background-color: #dfe6e9; color: #636e72; } 
+
+        .contact-btn {
+            background-color: #2c3e50;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+            width: auto;
+            margin: 0;
+        }
+        .contact-btn:hover {
+            background-color: #e17055;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .guide-text {
+            color: #666; 
+            font-size: 14px; 
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <h1>電子工程學研究所 (GIEE)</h1>
+    
+    <div class="animation-stage" style="background-color: #CD5C5C; border-color: #F9E79F;">
+        <div class="runner-character">🏃‍♂️ 📋 🔬</div>
+    </div>
+
+    <h2 style="color: #c0392b;">🎯 第一戰區：奈米電子組 (Nano-Electronics)</h2>
+    <p class="guide-text">⚠️ 重點需求：真空鍍膜 (PVD/CVD)、蝕刻機、石英爐管、MBE、電子束曝光</p>
+
+    <table>
+        <thead>
+            <tr class="header-nano">
+                <th width="20%">實驗室名稱</th>
+                <th width="15%">指導教授</th>
+                <th width="35%">研究領域 (設備需求)</th>
+                <th width="20%">館樓位置</th>
+                <th width="10%">聯絡</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>分子束磊晶實驗室 (MBE)</td>
+                <td>林浩雄 教授</td>
+                <td>
+                    <span class="tag tag-hot">MBE磊晶</span>
+                    <span class="tag tag-hot">高真空元件</span>
+                </td>
+                <td>電機一館 109</td>
+                <td><a href="https://www.ee.ntu.edu.tw/profile1.php?teacher_id=901067" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+            <tr>
+                <td>C-V 實驗室</td>
+                <td>胡振國 教授</td>
+                <td>
+                    <span class="tag tag-hot">MOS製程</span>
+                    <span class="tag tag-hot">薄膜特性</span>
+                </td>
+                <td>電機一館</td>
+                <td><a href="https://www.ee.ntu.edu.tw/profile1.php?teacher_id=901046" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+            <tr>
+                <td>有機光電元件實驗室</td>
+                <td>吳忠幟 教授</td>
+                <td>
+                    <span class="tag tag-hot">OLED蒸鍍</span>
+                    <span class="tag tag-hot">軟性電子</span>
+                </td>
+                <td>電機二館 301</td>
+                <td><a href="https://www.ee.ntu.edu.tw/profile1.php?teacher_id=901118" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+            <tr>
+                <td>矽鍺半導體實驗室</td>
+                <td>鄭鴻祥 教授</td>
+                <td>
+                    <span class="tag tag-hot">SiGe磊晶</span>
+                    <span class="tag tag-hot">量子點</span>
+                </td>
+                <td>電機一館 223</td>
+                <td><a href="https://www.ntu-ccms.ntu.edu.tw/zh/members/hung-hsiang-cheng-7" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+            <tr>
+                <td>前瞻矽元件與製程</td>
+                <td>劉致為 教授</td>
+                <td>
+                    <span class="tag tag-hot">先進製程</span>
+                    <span class="tag tag-hot">鍺電晶體</span>
+                </td>
+                <td>電機二館 350</td>
+                <td><a href="https://gipo.ntu.edu.tw/zh_tw/member/faculty/%E5%8A%89%E8%87%B4%E7%82%BA-14178276" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+            <tr>
+                <td>量子電子實驗室</td>
+                <td>李峻霣 教授</td>
+                <td>
+                    <span class="tag tag-hot">量子計算</span>
+                    <span class="tag tag-hot">低溫電子</span>
+                </td>
+                <td>電機二館 437</td>
+                <td><a href="https://www.ee.ntu.edu.tw/profile1.php?id=101123" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+            <tr>
+                <td>電子束實驗室</td>
+                <td>吳肇欣 教授</td>
+                <td>
+                    <span class="tag tag-hot">電子束微影</span>
+                    <span class="tag tag-norm">奈米光電</span>
+                </td>
+                <td>電機二館 128</td>
+                <td><a href="https://www.ee.ntu.edu.tw/profile1.php?teacher_id=100130" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+            <tr>
+                <td>奈米電子/光電材料</td>
+                <td>陳敏璋 教授</td>
+                <td>
+                    <span class="tag tag-hot">太陽能電池</span>
+                    <span class="tag tag-norm">光電材料</span>
+                </td>
+                <td>電機二館 301</td>
+                <td><a href="https://mse.ntu.edu.tw/web/about/mentor_in.jsp?fp_id=FP1756172599761" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+            <tr>
+                <td>奈米電子與記憶體</td>
+                <td>胡璧合 教授</td>
+                <td>
+                    <span class="tag tag-hot">鐵電記憶體</span>
+                    <span class="tag tag-hot">二維材料</span>
+                </td>
+                <td>明達館 603</td>
+                <td><a href="https://giee.ntu.edu.tw/faculty_main.php" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+            <tr>
+                <td>前瞻元件實驗室</td>
+                <td>毛明華 教授</td>
+                <td>
+                    <span class="tag tag-hot">量子點雷射</span>
+                </td>
+                <td>電機二館 126</td>
+                <td><a href="https://www.ee.ntu.edu.tw/profile1.php?teacher_id=901145" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 style="color: #2980b9;">💻 第二戰區：積體電路組 (ICS)</h2>
+    <p class="guide-text">⚠️ 潛在需求：封裝設備、散熱處理 (Power)、高頻基板量測 (RF/THz)</p>
+
+    <table>
+        <thead>
+            <tr class="header-ics">
+                <th width="20%">實驗室名稱</th>
+                <th width="15%">指導教授</th>
+                <th width="35%">研究領域</th>
+                <th width="20%">館樓位置</th>
+                <th width="10%">聯絡</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>微波電路與封裝</td>
+                <td>盧信嘉 教授</td>
+                <td><span class="tag tag-hot">系統封裝(SiP)</span> <span class="tag tag-norm">射頻電路</span></td>
+                <td>博理館 408</td>
+                <td><a href="https://www.ee.ntu.edu.tw/profile1.php?teacher_id=943012" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+            <tr>
+                <td>電力電子實驗室</td>
+                <td>陳景然 教授</td>
+                <td><span class="tag tag-hot">電源管理IC</span> <span class="tag tag-norm">高壓元件</span></td>
+                <td>電機二館 252</td>
+                <td><a href="https://www.ee.ntu.edu.tw/profile1.php?teacher_id=901183" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+            <tr>
+                <td>Access IC 實驗室</td>
+                <td>吳安宇 教授</td>
+                <td><span class="tag tag-norm">數位訊號</span> <span class="tag tag-norm">AI晶片</span></td>
+                <td>電機二館 232</td>
+                <td><a href="https://www.ee.ntu.edu.tw/profile1.php?teacher_id=901112" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+            <tr>
+                <td>類比設計實驗室</td>
+                <td>呂良鴻 教授</td>
+                <td><span class="tag tag-norm">高頻電路</span> <span class="tag tag-norm">類比IC</span></td>
+                <td>博理館 403</td>
+                <td><a href="https://www.ee.ntu.edu.tw/profile1.php?teacher_id=943004" target="_blank" class="contact-btn">📞 簡介</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+    <a href="ntu.html" style="background-color: rgba(255, 118, 117, 0.8); color: white; width: 300px;">
+        ⬅️ 回到台大列表
+    </a>
+</body>
+</html>

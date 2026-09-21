@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>勤益科大 - 潛在客戶導覽</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- 全域設定 --- */
+        body {
+            background: linear-gradient(135deg, #E8F6F3 0%, #FFFFFF 100%) !important;
+            padding-bottom: 80px; margin: 0; font-size: 14px;
+            animation: elegant-entry 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0; transform-origin: center top;
+        }
+        @keyframes elegant-entry { 0% { opacity: 0; transform: scale(1.03) translateY(15px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+
+        /* --- 標題區 --- */
+        .mech-header-container {
+            position: relative; width: 100%;
+            background: linear-gradient(to right, #117864, #5D6D7E);
+            padding: 25px 0; margin-bottom: 30px;
+            display: flex; justify-content: center; align-items: center;
+            border-bottom: 4px solid #F1C40F; box-shadow: 0 4px 10px rgba(17, 120, 100, 0.3); overflow: hidden;
+        }
+        .header-content { z-index: 2; text-align: center; padding: 0 20px; }
+        h1.main-title {
+            margin: 0 0 10px 0; font-size: 42px; font-weight: 900; color: #FFFFFF;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.3); letter-spacing: 2px;
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* --- 學校官網按鈕 --- */
+        a.school-link-badge {
+            display: inline-flex; align-items: center; background: #F1C40F; color: #117864;
+            padding: 8px 24px; border-radius: 50px; border: 2px solid #F1C40F;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-size: 16px; font-weight: 700; text-decoration: none;
+            transition: all 0.2s; cursor: pointer; margin-bottom: 15px;
+        }
+        a.school-link-badge:hover { transform: translateY(-3px) scale(1.05); background: #FFFFFF; color: #117864; border-color: #FFFFFF; }
+        
+        /* --- 資訊區 --- */
+        .info-badge-container { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .copy-badge {
+            display: inline-flex; align-items: center; background: rgba(255,255,255,0.15); backdrop-filter: blur(5px);
+            padding: 6px 16px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.4);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 14px; color: #FFFFFF; cursor: copy; transition: all 0.2s;
+        }
+        .copy-badge:hover { background: #F1C40F; transform: translateY(-2px); color: #117864; border-color: #F1C40F; }
+        .copy-badge:hover .badge-label { color: #117864; }
+        .copy-text { font-weight: 700; margin-left: 6px; font-family: monospace; font-size: 15px; user-select: all; cursor: copy; }
+        .badge-label { user-select: none; color: #D1F2EB; font-weight: 500; }
+
+        /* --- 裝飾 --- */
+        .mech-deco { position: absolute; top: 0; bottom: 0; width: 180px; display: flex; justify-content: center; align-items: center; opacity: 0.2; pointer-events: none; }
+        .deco-left { left: 0; } .deco-right { right: 0; }
+        .mech-svg { width: 100%; height: 100%; fill: none; stroke: #A3E4D7; stroke-width: 1.5; }
+        .animation-stage { background-color: #117864 !important; border-color: #A3E4D7; margin-top: 15px; padding: 5px 0; }
+        .runner-character { text-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 24px !important; }
+
+        h3 {
+            background: #FFFFFF; padding: 8px 20px; border-radius: 8px; margin-top: 15px; margin-bottom: 20px;
+            font-size: 20px; font-weight: 800; color: #117864; display: inline-block;
+            border-left: 5px solid #117864; border: 1px solid rgba(17, 120, 100, 0.2); border-left-color: #117864;
+            box-shadow: 0 4px 12px rgba(17, 120, 100, 0.15);
+        }
+
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; align-items: start; width: 92%; max-width: 1200px; margin: 0 auto; margin-bottom: 50px; }
+
+        a.dept-card {
+            display: flex; flex-direction: column; justify-content: center; align-items: center; width: auto; height: auto; min-height: 100px;
+            padding: 20px 15px; background: rgba(255, 255, 255, 0.95); border: 1px solid #A2D9CE; border-radius: 12px;
+            transition: all 0.2s; text-align: center; text-decoration: none; box-shadow: 5px 5px 15px rgba(17, 120, 100, 0.08);
+        }
+        a.dept-card:hover { transform: translateY(-5px) scale(1.01); background: white; border-color: #117864; box-shadow: 10px 15px 30px rgba(17, 120, 100, 0.2); }
+        .card-title { font-size: 18px; margin-bottom: 8px; color: #145A32; font-weight: 700; }
+        a.dept-card:hover .card-title { color: #117864; }
+        .dept-location { font-size: 13px; color: #666; background: rgba(232, 248, 245, 0.8); padding: 4px 10px; border-radius: 4px; margin-top: 4px; }
+        .loc-copy { user-select: all; cursor: copy; }
+
+        .chem-card { background: linear-gradient(135deg, #EAFAF1 0%, #D5F5E3 100%); border-color: #58D68D !important; }
+        .mech-card { background: linear-gradient(135deg, #F4F6F6 0%, #EBEDEF 100%); border-color: #85929E !important; }
+    </style>
+</head>
+<body>
+
+  <div class="mech-header-container">
+    <div class="mech-deco deco-left"><svg class="mech-svg" viewBox="0 0 100 200"><path d="M20,100 L50,50 L80,100 L50,150 Z" stroke-width="2" fill="none"/><circle cx="50" cy="100" r="10" fill="none"/></svg></div>
+    <div class="header-content">
+      <h1 class="main-title">國立勤益科技大學 (NCUT)</h1>
+      <div><a href="https://www.ncut.edu.tw/" target="_blank" class="school-link-badge">🏫 學校官網</a></div>
+      <div class="info-badge-container">
+        <div class="copy-badge" title="點擊複製統編"><span class="badge-label">統編：</span><span class="copy-text">52024109</span></div>
+        <div class="copy-badge" title="點擊複製地址"><span class="badge-label">地址：</span><span class="copy-text">411 台中市太平區坪林里中山路二段57號</span></div>
+      </div>
+    </div>
+    <div class="mech-deco deco-right"><svg class="mech-svg" viewBox="0 0 100 200"><rect x="30" y="50" width="40" height="100" stroke-width="2" rx="5" fill="none"/></svg></div>
+  </div>
+
+  <div class="animation-stage"><div class="runner-character">🏃 ⚙️ 🧊 🧪</div></div>
+
+  <h3>⚙️ 工程學院</h3>
+  <div class="card-grid">
+    <a href="https://me2.ncut.edu.tw/" target="_blank" class="dept-card mech-card">
+      <span class="card-title">🔧 機械工程系</span>
+      <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工程館</span></span>
+    </a>
+    <a href="https://iae.ncut.edu.tw/" target="_blank" class="dept-card mech-card">
+      <span class="card-title">🤖 智慧自動化工程系</span>
+      <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工具機學院大樓</span></span>
+    </a>
+    <a href="https://rac.ncut.edu.tw/" target="_blank" class="dept-card chem-card">
+      <span class="card-title">❄️ 冷凍空調與能源系</span>
+      <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工程館</span></span>
+    </a>
+    <a href="https://cheme.ncut.edu.tw/" target="_blank" class="dept-card chem-card">
+      <span class="card-title">🧪 化工與材料工程系</span>
+      <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工程館</span></span>
+    </a>
+  </div>
+
+  <h3>⚡ 電資學院</h3>
+  <div class="card-grid">
+    <a href="https://eeweb.ncut.edu.tw/" target="_blank" class="dept-card">
+      <span class="card-title">🔌 電機工程系</span>
+    </a>
+    <a href="https://eet.ncut.edu.tw/" target="_blank" class="dept-card">
+      <span class="card-title">💻 電子工程系</span>
+    </a>
+  </div>
+
+</body>
+
+    <a href="index.html" class="footer-single-btn">⬅️ 回到首頁</a>
+</body>
+</html>

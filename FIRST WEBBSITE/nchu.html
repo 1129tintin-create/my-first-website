@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>中興大學 - 潛在客戶導覽</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* --- 全域設定 --- */
+        body {
+            /* 背景：清新的湖畔晨光漸層 */
+            background: linear-gradient(135deg, #EAFAF1 0%, #FFFFFF 100%) !important;
+            padding-bottom: 80px;
+            margin: 0;
+            font-size: 14px; /* 精緻小字體 */
+            
+            /* ✨ 進場動畫：優雅浮現 ✨ */
+            animation: elegant-entry 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0;
+            transform-origin: center top;
+        }
+
+        @keyframes elegant-entry {
+            0% { opacity: 0; transform: scale(1.03) translateY(15px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* --- ✨ 核心設計：湖畔綠意標題區 ✨ --- */
+        .lake-header-container {
+            position: relative;
+            width: 100%;
+            /* 標題區背景：從森林綠漸層到湖水藍 */
+            background: linear-gradient(to right, #27AE60, #2980B9);
+            padding: 25px 0; /* 高度縮減 */
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 4px solid #F4D03F; /* 金色底線 */
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+            overflow: hidden;
+        }
+
+        /* 標題內容區 */
+        .header-content {
+            z-index: 2;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        /* 大標題文字 */
+        h1.main-title {
+            margin: 0 0 10px 0;
+            font-size: 42px; /* 精緻版字體 */
+            font-weight: 900;
+            color: #FFFFFF;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* --- 森林與湖水裝飾 --- */
+        .lake-deco {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .deco-left { left: 0; }
+        .deco-right { right: 0; }
+
+        /* SVG 線條設定 */
+        .lake-svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: #A9DFBF;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* --- 統編與地址 --- */
+        .info-badge-container {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .copy-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 8px 18px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 15px;
+            color: #FFFFFF;
+            cursor: copy;
+            transition: all 0.2s;
+        }
+
+        .copy-badge:hover {
+            background: #F4D03F;
+            transform: translateY(-2px);
+            color: #145A32;
+            border-color: #F4D03F;
+        }
+        .copy-badge:hover .badge-label { color: #145A32; }
+        .copy-badge:active { transform: translateY(0); }
+        
+        .copy-text { user-select: all; font-weight: 700; margin-left: 6px; font-family: monospace; font-size: 16px; }
+        .badge-label { user-select: none; color: #EAFAF1; font-weight: 500;}
+
+
+        /* --- 下方通用樣式 --- */
+        .animation-stage {
+            background-color: #27AE60 !important;
+            border-color: #A9DFBF;
+            margin-top: 15px;
+            padding: 5px 0;
+        }
+        .runner-character { text-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 24px !important; }
+
+        /* 分類標題 */
+        h3 {
+            background: #FFFFFF;
+            padding: 8px 20px;
+            border-radius: 8px;
+            margin-top: 15px;      
+            margin-bottom: 20px;   
+            font-size: 20px;
+            font-weight: 800;
+            color: #145A32;
+            display: inline-block;
+            border-left: 5px solid #27AE60;
+            border: 1px solid rgba(39, 174, 96, 0.2);
+            border-left-color: #27AE60;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.15);
+            position: relative;
+            z-index: 10;
+            clear: both;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            align-items: start;
+            width: 92%;
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-bottom: 50px;
+        }
+
+        /* 卡片樣式 (精緻版) */
+        a.dept-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            width: auto;
+            height: auto;
+            min-height: 100px;
+            
+            padding: 20px 15px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #A9DFBF;
+            border-radius: 12px;
+            
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-align: center;
+            position: relative;
+            text-decoration: none;
+            
+            z-index: 1;
+            box-shadow: 
+                5px 5px 15px rgba(39, 174, 96, 0.08),
+                -3px -3px 10px rgba(255, 255, 255, 0.9);
+        }
+
+        a.dept-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            background: white;
+            border-color: #27AE60;
+            box-shadow: 
+                10px 15px 30px rgba(39, 174, 96, 0.2),
+                -5px -5px 15px rgba(255, 255, 255, 1);
+            z-index: 20;
+        }
+
+        .card-title {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #145A32;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        a.dept-card:hover .card-title { color: #27AE60; }
+
+        .dept-location {
+            font-size: 13px;
+            color: #666;
+            background: rgba(234, 250, 241, 0.8);
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-top: 4px;
+            user-select: none;
+            font-weight: 500;
+        }
+        
+        .loc-copy { user-select: all; cursor: copy; }
+
+        /* 特殊卡片：環境/農業 (有機綠) */
+        .env-card {
+            background: linear-gradient(135deg, #E8F8F5 0%, #D1F2EB 100%);
+            border-color: #1ABC9C !important;
+        }
+        .env-card:hover { border-color: #148F77 !important; }
+        .env-card .card-title { color: #0E6251; }
+
+        /* 特殊卡片：精密/光電 (金屬灰) */
+        .precision-card {
+            background: linear-gradient(135deg, #FBFCFC 0%, #EAFAF1 100%);
+            border-color: #85929E !important;
+        }
+        .precision-card:hover { border-color: #34495E !important; }
+        .precision-card .card-title { color: #2E4053; }
+    </style>
+</head>
+<body>
+
+    <div class="lake-header-container">
+        
+        <div class="lake-deco deco-left">
+            <svg class="lake-svg" viewBox="0 0 100 200" preserveAspectRatio="none">
+                <path d="M0,200 Q40,150 40,100 Q40,50 80,0" stroke-width="2" stroke="rgba(255,255,255,0.3)"/>
+                <path d="M-20,200 Q20,150 20,100 Q20,50 60,0" stroke-width="1.5" stroke="rgba(255,255,255,0.2)"/>
+                <circle cx="50" cy="50" r="3" fill="#F4D03F" stroke="none" />
+                <circle cx="30" cy="180" r="2" fill="#F4D03F" stroke="none" />
+            </svg>
+        </div>
+
+        <div class="header-content">
+            <h1 class="main-title">國立中興大學 (NCHU)</h1>
+            
+            <div class="info-badge-container">
+                <div class="copy-badge" title="複製統編">
+                    <span class="badge-label">統編：</span><span class="copy-text">52024109</span>
+                </div>
+                <div class="copy-badge" title="複製地址">
+                    <span class="badge-label">地址：</span><span class="copy-text">402 台中市南區興大路145號</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="lake-deco deco-right">
+            <svg class="lake-svg" viewBox="0 0 100 200" preserveAspectRatio="none">
+                <ellipse cx="50" cy="100" rx="40" ry="10" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" />
+                <ellipse cx="50" cy="120" rx="50" ry="12" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
+                <ellipse cx="50" cy="140" rx="60" ry="14" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+                <circle cx="50" cy="90" r="2" fill="#F4D03F" stroke="none" />
+            </svg>
+        </div>
+
+    </div>
+
+    <div class="animation-stage">
+        <div class="runner-character" style="font-size: 24px;">🏃‍♂️ 🌳 ⚙️ 💧</div>
+    </div>
+
+    <h3>🌿 環境與農業科技 (電漿廢水/土壤)</h3>
+    <div class="card-grid">
+        <a href="http://www.ev.nchu.edu.tw/" target="_blank" class="dept-card env-card">
+            <span class="card-title">💧 環境工程學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">土木環工大樓</span></span>
+        </a>
+        <a href="https://soil.nchu.edu.tw/" target="_blank" class="dept-card env-card">
+            <span class="card-title">🌱 土壤環境科學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">農業環境科學大樓</span></span>
+        </a>
+        <a href="https://bimewww.nchu.edu.tw/" target="_blank" class="dept-card env-card">
+            <span class="card-title">🤖 生物產業機電工程</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">生機大樓</span></span>
+        </a>
+    </div>
+
+    <h3>⚙️ 精密工程與光電 (真空/鍍膜)</h3>
+    <div class="card-grid">
+        <a href="http://www.ipe.nchu.edu.tw/" target="_blank" class="dept-card precision-card">
+            <span class="card-title">🔬 精密工程研究所 (GPE)</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">應用科技大樓</span></span>
+        </a>
+        <a href="http://www.ioe.nchu.edu.tw/" target="_blank" class="dept-card precision-card">
+            <span class="card-title">🔦 光電工程研究所</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">電機大樓</span></span>
+        </a>
+        <a href="https://icast.nchu.edu.tw/" target="_blank" class="dept-card precision-card">
+            <span class="card-title">🧊 前瞻理工中心 (奈米)</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">理學大樓</span></span>
+        </a>
+    </div>
+
+    <h3>⚗️ 材料與化學 (表面處理/耗材)</h3>
+    <div class="card-grid">
+        <a href="https://www.mse.nchu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🧱 材料科學與工程學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">材料科學館</span></span>
+        </a>
+        <a href="http://www.che.nchu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">⚗️ 化學工程學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">化工館</span></span>
+        </a>
+        <a href="https://www.chem.nchu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🧪 化學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">化學館</span></span>
+        </a>
+    </div>
+
+    <h3>⚡ 機電與物理</h3>
+    <div class="card-grid">
+        <a href="https://www.ee.nchu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🔌 電機工程學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">電機館</span></span>
+        </a>
+        <a href="https://www.me.nchu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🔧 機械工程學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">機械館</span></span>
+        </a>
+        <a href="https://www.phys.nchu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">⚛️ 物理學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">物理學系館</span></span>
+        </a>
+    </div>
+
+    <a href="index.html" style="background-color: #27AE60; color: white; width: 150px; padding: 10px; border-radius: 25px; font-size: 16px; display: inline-block;">
+        ⬅️ 回到首頁
+    </a>
+</body>
+</html>

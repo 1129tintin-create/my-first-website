@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國立嘉義大學 - 系所導覽 (修正版)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* 嘉大 KANO 大地配色 */
+            --header-green: #2E8B57;  /* 嘉大綠 (SeaGreen) */
+            --bg-rice-white: #FAF9F6; /* 稻穗米白 */
+            --pill-yellow: #FFF8DC;   /* 玉米黃 */
+            
+            /* 類別強調色 */
+            --energy-orange: #FF8C00; /* 能源/物理組 - 夕陽橘 */
+            --chem-green: #556B2F;    /* 化學/生機組 - 橄欖綠 */
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", "Heiti TC", sans-serif;
+            background-color: var(--bg-rice-white);
+            margin: 0; padding: 0; color: #333;
+        }
+
+        /* --- 1. 標頭區域 --- */
+        .main-header {
+            background: linear-gradient(135deg, var(--header-green), #1B5E3A);
+            padding: 35px 20px 45px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 6px 15px rgba(46,139,87,0.25);
+            position: relative; overflow: hidden;
+        }
+
+        .main-header h1 {
+            margin: 0 0 10px 0; font-size: 2.3rem; letter-spacing: 2px; font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        .sub-header {
+            margin-bottom: 25px; font-size: 1.1rem; opacity: 0.95; letter-spacing: 1px;
+            font-weight: 500;
+            animation: fadeInDown 0.8s ease-out 0.1s backwards;
+        }
+        
+        /* 背景裝飾 */
+        .header-bg-icon {
+            position: absolute; bottom: -10px; right: 10px; font-size: 9rem; opacity: 0.1; color: #FFD700; transform: rotate(-15deg); pointer-events: none;
+        }
+
+        /* 官網按鈕 */
+        .website-btn {
+            display: inline-flex; align-items: center;
+            background: white; color: var(--header-green);
+            padding: 12px 38px; border-radius: 50px;
+            text-decoration: none; font-weight: bold; font-size: 1.1rem;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+            position: relative; overflow: hidden; cursor: pointer;
+        }
+        .website-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.2); background: #FFFFF0; }
+        .website-btn:active { transform: scale(0.96); }
+        .website-btn i { margin-right: 10px; }
+
+        /* --- 2. 統編與地址 --- */
+        .badges-container {
+            display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+            animation: fadeIn 1s ease-out 0.3s backwards;
+        }
+
+        .copy-box {
+            background-color: rgba(255,255,255,0.95);
+            border: 2px dashed #8FBC8F;
+            color: #006400;
+            padding: 10px 25px;
+            border-radius: 12px; 
+            font-size: 1.1rem; font-weight: bold; font-family: monospace, sans-serif;
+            cursor: pointer; display: flex; align-items: center;
+            transition: all 0.2s ease; position: relative; overflow: hidden; user-select: none;
+        }
+
+        .copy-box:hover {
+            background-color: white; transform: scale(1.03);
+            box-shadow: 0 5px 10px rgba(46,139,87,0.2); border-color: var(--header-green);
+        }
+        
+        .copy-box:active {
+            background-color: var(--energy-orange); color: white; border-color: var(--energy-orange);
+            transform: scale(0.94);
+        }
+
+        .copy-box i { margin-right: 10px; color: #2E8B57; }
+        .copy-box:active i { color: white; }
+        .copy-hint { font-size: 0.8rem; margin-left: 8px; opacity: 0.6; font-weight: normal; }
+
+        /* --- 主要內容區 --- */
+        .main-container { max-width: 1100px; margin: 50px auto; padding: 0 25px; }
+        .category-group { margin-bottom: 60px; }
+
+        /* 分類標題 */
+        .cat-pill {
+            background: var(--pill-yellow);
+            width: fit-content; margin: 0 auto 35px; padding: 15px 45px;
+            border-radius: 50px; display: flex; align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative; overflow: hidden;
+            border: 2px solid white;
+            animation: popIn 0.7s cubic-bezier(0.19, 1, 0.22, 1) backwards;
+        }
+        .cat-pill::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; }
+        .ncyu-energy .cat-pill::before { background: var(--energy-orange); }
+        .ncyu-chem .cat-pill::before { background: var(--chem-green); }
+        
+        .cat-pill h2 { margin: 0; font-size: 1.5rem; color: #555; }
+        .cat-pill-icon { margin-right: 15px; font-size: 1.4rem; }
+        .ncyu-energy .cat-pill-icon { color: var(--energy-orange); }
+        .ncyu-chem .cat-pill-icon { color: var(--chem-green); }
+
+        /* 卡片網格 */
+        .dept-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; justify-content: center;
+        }
+
+        /* --- 卡片核心樣式 --- */
+        .dept-card {
+            background: white; border-radius: 18px; overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center; padding: 35px 25px; position: relative;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; text-decoration: none;
+            border-bottom: 4px solid transparent;
+            opacity: 0; animation: slideUpFade 0.7s ease-out forwards;
+        }
+
+        .dept-card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: 0 18px 40px rgba(46,139,87,0.15); 
+        }
+
+        .dept-card:active { 
+            transform: scale(0.95) translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.08); background-color: #fcfcfc;
+        }
+
+        .card-top-border { position: absolute; top: 0; left: 0; right: 0; height: 7px; }
+        .ncyu-energy .card-top-border { background: var(--energy-orange); }
+        .ncyu-chem .card-top-border { background: var(--chem-green); }
+        
+        .ncyu-energy .dept-card:hover { border-bottom-color: var(--energy-orange); }
+        .ncyu-chem .dept-card:hover { border-bottom-color: var(--chem-green); }
+
+        .dept-icon { font-size: 2.8rem; margin-bottom: 18px; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .dept-card:hover .dept-icon { transform: scale(1.15); }
+        
+        .ncyu-energy .dept-icon { color: var(--energy-orange); }
+        .ncyu-chem .dept-icon { color: var(--chem-green); }
+
+        .dept-link-title { margin: 0 0 12px 0; font-size: 1.35rem; font-weight: 700; color: #333; }
+        
+        .dept-loc {
+            margin: 12px 0 0; font-size: 0.95rem; color: #888;
+            display: flex; align-items: center;
+            background: #F0FFF0; padding: 6px 14px; border-radius: 20px;
+        }
+        .dept-loc i { margin-right: 7px; color: #aaa; }
+
+        /* 水波紋特效 */
+        .ripple {
+            position: absolute; border-radius: 50%;
+            transform: scale(0); animation: ripple-animation 0.7s linear; pointer-events: none;
+        }
+        .ncyu-energy .ripple { background: rgba(255, 140, 0, 0.15); }
+        .ncyu-chem .ripple { background: rgba(85, 107, 47, 0.15); }
+        .copy-box .ripple, .website-btn .ripple { background: rgba(46, 139, 87, 0.2); }
+
+        @keyframes ripple-animation { to { transform: scale(3.5); opacity: 0; } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-25px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <i class="fas fa-leaf header-bg-icon"></i>
+        <h1>國立嘉義大學 (NCYU)</h1>
+        <div class="sub-header">理工學院 (蘭潭校區)</div>
+        
+        <a href="https://www.ncyu.edu.tw/" target="_blank" class="website-btn ripple-target">
+            <i class="fas fa-university"></i> 學校官網
+        </a>
+
+        <div class="badges-container">
+            <div class="copy-box ripple-target" onclick="copyText(this, '66019206')" title="點擊複製">
+                <i class="fas fa-file-invoice"></i>
+                <span>66019206</span>
+                <span class="copy-hint">(點擊複製)</span>
+            </div>
+            <div class="copy-box ripple-target" onclick="copyText(this, '600355 嘉義市東區學府路300號')" title="點擊複製">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>600355 嘉義市東區學府路300號 (蘭潭校區)</span>
+                <span class="copy-hint">(點擊複製)</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container" id="main-content">
+        </div>
+
+    <script>
+        // --- 嘉義大學系所資料 (修正網址) ---
+        const departments = [
+            {
+                category: "電子物理與能源工程",
+                icon: "fas fa-sun",
+                class: "ncyu-energy",
+                subDepartments: [
+                    { 
+                        name: "電子物理學系", 
+                        // 修正 2：更新為 phys
+                        link: "https://www.ncyu.edu.tw/phys/", 
+                        loc: "蘭潭校區 (理工學院)", 
+                        icon: "fas fa-bolt" 
+                    },
+                    { 
+                        name: "機械與能源工程學系", 
+                        // 修正 3：更新為 energy
+                        link: "https://www.ncyu.edu.tw/energy/", 
+                        loc: "蘭潭校區 (理工學院)", 
+                        icon: "fas fa-cogs" 
+                    },
+                    { 
+                        name: "電機工程學系", 
+                        link: "https://www.ncyu.edu.tw/ee/", 
+                        loc: "蘭潭校區 (理工學院)", 
+                        icon: "fas fa-microchip" 
+                    }
+                ]
+            },
+            {
+                category: "化學與生物機電",
+                icon: "fas fa-flask", 
+                class: "ncyu-chem",
+                subDepartments: [
+                    { 
+                        name: "應用化學系", 
+                        link: "https://www.ncyu.edu.tw/chem/", 
+                        loc: "蘭潭校區 (理工學院)", 
+                        icon: "fas fa-vial" 
+                    },
+                    { 
+                        name: "生物機電工程學系", 
+                        // 修正 4：更新為 bioeng
+                        link: "https://www.ncyu.edu.tw/bioeng/", 
+                        loc: "蘭潭校區 (理工學院)", 
+                        icon: "fas fa-robot" 
+                    }
+                ]
+            }
+        ];
+
+        const container = document.getElementById('main-content');
+        let animationDelay = 0.2;
+
+        departments.forEach(cat => {
+            let html = `
+                <section class="category-group ${cat.class}">
+                    <div class="cat-pill">
+                        <i class="${cat.icon} cat-pill-icon"></i>
+                        <h2>${cat.category}</h2>
+                    </div>
+                    <div class="dept-grid">
+            `;
+            cat.subDepartments.forEach(dept => {
+                animationDelay += 0.15;
+                html += `
+                        <a href="${dept.link}" target="_blank" class="dept-card ripple-target" style="animation-delay: ${animationDelay}s">
+                            <div class="card-top-border"></div>
+                            <i class="${dept.icon} dept-icon"></i>
+                            <h3 class="dept-link-title">${dept.name}</h3>
+                            <p class="dept-loc">
+                                <i class="fas fa-map-pin"></i> ${dept.loc}
+                            </p>
+                        </a>
+                `;
+            });
+            html += `   </div></section>`;
+            container.innerHTML += html;
+        });
+
+        document.addEventListener('click', function(e) {
+            const target = e.target.closest('.ripple-target');
+            if (target) { createRipple(e, target); }
+        });
+
+        function createRipple(event, element) {
+            const circle = document.createElement("span");
+            const diameter = Math.max(element.clientWidth, element.clientHeight);
+            const radius = diameter / 2;
+            const rect = element.getBoundingClientRect();
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - rect.left - radius}px`;
+            circle.style.top = `${event.clientY - rect.top - radius}px`;
+            circle.classList.add("ripple");
+            
+            const ripple = element.getElementsByClassName("ripple")[0];
+            if (ripple) { ripple.remove(); }
+            element.appendChild(circle);
+        }
+
+        function copyText(element, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                console.log("已複製: " + text);
+            });
+        }
+    </script>
+</body>
+</html>

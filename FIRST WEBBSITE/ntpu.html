@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國立臺北大學 - 精準系所導覽 (動畫版)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* 核心配色 */
+            --header-blue: #004B97; /* 北大深藍 */
+            --bg-light-blue: #EDF7FF;
+            --accent-yellow: #FFFBE6;
+            
+            /* 類別強調色 */
+            --tech-accent: #0056b3; 
+            --env-accent: #C6A300;
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", "Heiti TC", sans-serif;
+            background-color: var(--bg-light-blue);
+            margin: 0; padding: 0; color: #333;
+        }
+
+        /* --- 1. 標頭區域 --- */
+        .main-header {
+            background-color: var(--header-blue);
+            padding: 30px 20px 40px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden; /* 為了讓水波紋不溢出 */
+        }
+
+        .main-header h1 {
+            margin: 0 0 25px 0;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            animation: fadeInDown 0.8s ease-out; /* 標題進場動畫 */
+        }
+
+        /* 官網按鈕 */
+        .website-btn {
+            display: inline-flex; align-items: center;
+            background: white; color: var(--header-blue);
+            padding: 10px 35px; border-radius: 50px;
+            text-decoration: none; font-weight: bold; font-size: 1.1rem;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden; /* 必要的 ripple 限制 */
+            cursor: pointer;
+        }
+        .website-btn:hover { transform: translateY(-2px); }
+        .website-btn:active { transform: scale(0.95); } /* 按壓效果 */
+        .website-btn i { margin-right: 10px; }
+
+        /* --- 2. 統編與地址 --- */
+        .badges-container {
+            display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+            animation: fadeIn 1s ease-out 0.3s backwards; /* 延遲進場 */
+        }
+
+        .copy-box {
+            background-color: #E3F2FD; 
+            border: 2px dashed #64B5F6;
+            color: #0D47A1;
+            padding: 10px 25px;
+            border-radius: 8px; 
+            font-size: 1.1rem;
+            font-weight: bold;
+            font-family: monospace, sans-serif;
+            cursor: pointer;
+            display: flex; align-items: center;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden; /* 必要的 ripple 限制 */
+            user-select: none; /* 防止連點選取文字 */
+        }
+
+        .copy-box:hover {
+            background-color: #BBDEFB;
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        /* 點擊瞬間的強烈縮放感 */
+        .copy-box:active {
+            background-color: #81C784; 
+            color: white; border-color: #81C784;
+            transform: scale(0.92); /* 按壓深度加強 */
+        }
+
+        .copy-box i { margin-right: 10px; color: #1976D2; }
+        .copy-box:active i { color: white; }
+        .copy-hint { font-size: 0.8rem; margin-left: 8px; opacity: 0.6; font-weight: normal; }
+
+
+        /* --- 主要內容區 --- */
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .category-group { margin-bottom: 50px; }
+
+        /* 分類標題 */
+        .cat-pill {
+            background: var(--accent-yellow);
+            width: fit-content; margin: 0 auto 30px; padding: 15px 40px;
+            border-radius: 50px; display: flex; align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative; overflow: hidden;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+        }
+        .cat-pill::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px;
+        }
+        .ntpu-tech-blue .cat-pill::before { background: var(--tech-accent); }
+        .ntpu-env-gold .cat-pill::before { background: var(--env-accent); }
+        
+        .cat-pill h2 { margin: 0; font-size: 1.5rem; color: #444; }
+        .cat-pill-icon { margin-right: 15px; font-size: 1.4rem; }
+        .ntpu-tech-blue .cat-pill-icon { color: var(--tech-accent); }
+        .ntpu-env-gold .cat-pill-icon { color: var(--env-accent); }
+
+        /* 卡片網格 */
+        .dept-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;
+        }
+
+        /* --- 卡片核心樣式 (含動畫) --- */
+        .dept-card {
+            background: white; border-radius: 16px; overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            text-align: center; padding: 30px 20px; position: relative;
+            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.2s;
+            display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; /* 讓滑鼠變成手指，暗示可點擊 */
+            text-decoration: none; /* 如果是用 a 標籤包覆整個卡片 */
+            
+            /* 進場動畫設定 */
+            opacity: 0;
+            animation: slideUpFade 0.6s ease-out forwards;
+        }
+
+        /* 滑鼠懸停：上浮 */
+        .dept-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12); 
+        }
+
+        /* 滑鼠點擊：下壓 (Press Effect) */
+        .dept-card:active { 
+            transform: scale(0.96) translateY(-2px); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background-color: #fafafa;
+        }
+
+        .card-top-border { position: absolute; top: 0; left: 0; right: 0; height: 6px; }
+        .ntpu-tech-blue .card-top-border { background: var(--tech-accent); }
+        .ntpu-env-gold .card-top-border { background: var(--env-accent); }
+
+        .dept-icon { font-size: 2.5rem; margin-bottom: 15px; transition: transform 0.3s; }
+        .dept-card:hover .dept-icon { transform: scale(1.1) rotate(5deg); } /* icon 微動特效 */
+        
+        .ntpu-tech-blue .dept-icon { color: var(--tech-accent); }
+        .ntpu-env-gold .dept-icon { color: var(--env-accent); }
+
+        .dept-link-title { 
+            margin: 0 0 10px 0; font-size: 1.3rem; font-weight: bold; color: #2c3e50; 
+        }
+        
+        .dept-loc {
+            margin: 10px 0 0; font-size: 0.95rem; color: #777;
+            display: flex; align-items: center;
+            background: #f4f4f4; padding: 5px 12px; border-radius: 20px;
+        }
+        .dept-loc i { margin-right: 6px; color: #999; }
+
+        /* --- 水波紋特效 (Ripple CSS) --- */
+        .ripple {
+            position: absolute;
+            background: rgba(0, 75, 151, 0.15); /* 北大藍的半透明色 */
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none; /* 讓點擊穿透 */
+        }
+        
+        /* 金色區域的水波紋改為金色 */
+        .ntpu-env-gold .ripple { background: rgba(198, 163, 0, 0.2); }
+        .copy-box .ripple { background: rgba(255, 255, 255, 0.4); } /* 複製按鈕用白色波紋 */
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* --- 進場動畫 Keyframes --- */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <h1>國立臺北大學 (NTPU)</h1>
+        
+        <a href="https://www.ntpu.edu.tw/" target="_blank" class="website-btn ripple-target">
+            <i class="fas fa-school"></i> 學校官網
+        </a>
+
+        <div class="badges-container">
+            <div class="copy-box ripple-target" onclick="copyText(this, '10345108')" title="點擊複製">
+                <i class="fas fa-file-invoice"></i>
+                <span>10345108</span>
+                <span class="copy-hint">(點擊複製)</span>
+            </div>
+            <div class="copy-box ripple-target" onclick="copyText(this, '23741 新北市三峽區大學路151號')" title="點擊複製">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>23741 新北市三峽區大學路151號</span>
+                <span class="copy-hint">(點擊複製)</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container" id="main-content">
+        </div>
+
+    <script>
+        // --- 嚴格資料清洗區 (保留正確系所) ---
+        const departments = [
+            {
+                category: "電機與資訊工程", 
+                icon: "fas fa-microchip",
+                class: "ntpu-tech-blue",
+                subDepartments: [
+                    { name: "電機工程學系", link: "https://ee.ntpu.edu.tw/", loc: "音律電機資訊大樓", icon: "fas fa-bolt" },
+                    { name: "通訊工程學系", link: "https://www.ce.ntpu.edu.tw/", loc: "音律電機資訊大樓", icon: "fas fa-broadcast-tower" },
+                    { name: "資訊工程學系", link: "https://www.csie.ntpu.edu.tw/", loc: "音律電機資訊大樓", icon: "fas fa-laptop-code" }
+                ]
+            },
+            {
+                category: "環境與資源管理", 
+                icon: "fas fa-leaf",
+                class: "ntpu-env-gold",
+                subDepartments: [
+                    { name: "自然資源與環境管理", link: "https://inrm.ntpu.edu.tw/", loc: "公共事務大樓", icon: "fas fa-recycle" }
+                ]
+            }
+        ];
+
+        const container = document.getElementById('main-content');
+        
+        // 渲染 HTML
+        let animationDelay = 0.2; // 初始延遲時間
+
+        departments.forEach(cat => {
+            let html = `
+                <section class="category-group ${cat.class}">
+                    <div class="cat-pill">
+                        <i class="${cat.icon} cat-pill-icon"></i>
+                        <h2>${cat.category}</h2>
+                    </div>
+                    <div class="dept-grid">
+            `;
+            cat.subDepartments.forEach(dept => {
+                // 為每個卡片增加 animation-delay，創造流水般進場效果
+                animationDelay += 0.1; 
+                
+                // 改用 <a> 標籤包覆整個卡片，讓點擊體驗更好
+                html += `
+                        <a href="${dept.link}" target="_blank" class="dept-card ripple-target" style="animation-delay: ${animationDelay}s">
+                            <div class="card-top-border"></div>
+                            <i class="${dept.icon} dept-icon"></i>
+                            <h3 class="dept-link-title">${dept.name}</h3>
+                            <p class="dept-loc">
+                                <i class="fas fa-map-pin"></i> ${dept.loc}
+                            </p>
+                        </a>
+                `;
+            });
+            html += `   </div></section>`;
+            container.innerHTML += html;
+        });
+
+        // --- 水波紋特效 JS 邏輯 ---
+        // 監聽所有帶有 .ripple-target 的元素點擊事件
+        document.addEventListener('click', function(e) {
+            const target = e.target.closest('.ripple-target');
+            if (target) {
+                createRipple(e, target);
+            }
+        });
+
+        function createRipple(event, element) {
+            const circle = document.createElement("span");
+            const diameter = Math.max(element.clientWidth, element.clientHeight);
+            const radius = diameter / 2;
+
+            // 計算點擊位置相對於元素的座標
+            const rect = element.getBoundingClientRect();
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - rect.left - radius}px`;
+            circle.style.top = `${event.clientY - rect.top - radius}px`;
+            circle.classList.add("ripple");
+
+            // 移除舊的 ripple (防止堆積 DOM)
+            const ripple = element.getElementsByClassName("ripple")[0];
+            if (ripple) {
+                ripple.remove();
+            }
+
+            element.appendChild(circle);
+        }
+
+        // 靜默複製功能
+        function copyText(element, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                console.log("已複製: " + text);
+                // 這裡不需要額外做什麼，因為 CSS :active 和 ripple 已經提供了足夠的回饋
+            }).catch(err => {
+                console.error('複製失敗', err);
+            });
+        }
+    </script>
+</body>
+</html>

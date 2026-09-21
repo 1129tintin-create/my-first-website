@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>海洋大學 - 潛在客戶導覽</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* --- 全域設定 --- */
+        body {
+            /* 背景：太平洋的深藍與浪花的白 */
+            background: linear-gradient(135deg, #E1F5FE 0%, #E0F7FA 100%) !important;
+            padding-bottom: 80px;
+            margin: 0;
+            font-size: 14px;
+            animation: elegant-entry 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes elegant-entry {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 核心設計：NTOU 標題區 --- */
+        .ntou-header-container {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(to right, #01579B, #0288D1); /* 海洋深藍 */
+            padding: 30px 0;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 5px solid #FFEB3B; /* 燈塔黃 */
+            box-shadow: 0 4px 15px rgba(1, 87, 155, 0.3);
+            flex-direction: column;
+        }
+
+        .header-content { text-align: center; z-index: 2; padding: 0 20px; width: 100%; max-width: 1000px; }
+
+        h1.main-title {
+            margin: 0 0 15px 0;
+            font-size: 40px;
+            font-weight: 900;
+            color: #FFFFFF;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* 學校官網按鈕 (標準大小) */
+        a.school-link-badge {
+            display: inline-flex;
+            align-items: center;
+            background: #FFFFFF;
+            color: #01579B;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: 0.2s;
+            margin-bottom: 15px;
+        }
+        a.school-link-badge:hover { transform: scale(1.05); background: #FFEB3B; color: #01579B; }
+
+        /* 資訊區 */
+        .info-badge-container { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 5px; }
+        .copy-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 5px 12px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #FFFFFF;
+            font-size: 13px;
+            cursor: copy;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .copy-badge:hover { background: #FFFFFF; color: #01579B; border-color: #FFFFFF; }
+        .copy-text { font-weight: 700; margin-left: 5px; user-select: all; }
+        .badge-label { font-weight: 500; opacity: 0.9; }
+
+        /* 分類標題 */
+        h3 {
+            background: #FFFFFF; padding: 10px 20px; border-radius: 8px;
+            margin: 30px auto 20px auto; width: fit-content;
+            font-size: 20px; font-weight: 800; color: #01579B;
+            border-left: 6px solid #FFEB3B;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; width: 92%; max-width: 1200px; margin: 0 auto;
+        }
+
+        /* 卡片設定 */
+        a.dept-card {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 25px 15px; background: white;
+            border: 1px solid #B3E5FC; border-radius: 15px;
+            transition: 0.2s; text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        a.dept-card:hover { transform: translateY(-5px); border-color: #01579B; box-shadow: 0 10px 25px rgba(1, 87, 155, 0.15); }
+
+        .card-title { font-size: 18px; color: #01579B; font-weight: 800; margin-bottom: 8px; }
+        .campus-tag {
+            font-size: 12px; color: #666; background: #E1F5FE;
+            padding: 3px 10px; border-radius: 4px; font-weight: 600;
+        }
+
+        /* 特殊卡片色系 */
+        .bio-card { border-top: 5px solid #009688 !important; } /* 水產/食科綠 */
+        .opt-card { border-top: 5px solid #FF9800 !important; } /* 光電橘 */
+        .eng-card { border-top: 5px solid #607D8B !important; } /* 工程灰 */
+        .env-card { border-top: 5px solid #0288D1 !important; } /* 環境藍 */
+
+    </style>
+</head>
+<body>
+
+    <div class="ntou-header-container">
+        <div class="header-content">
+            <h1 class="main-title">國立臺灣海洋大學 (NTOU)</h1>
+            
+            <a href="https://www.ntou.edu.tw/" target="_blank" class="school-link-badge">🏫 學校官網</a>
+            
+            <div class="info-badge-container">
+                <div class="copy-badge" title="點擊複製"><span class="badge-label">統編：</span><span class="copy-text">00501503</span></div>
+                <div class="copy-badge" title="點擊複製"><span class="badge-label">地址：</span><span class="copy-text">202301 基隆市中正區北寧路2號</span></div>
+            </div>
+        </div>
+    </div>
+
+    <h3>🥗 水產與食品安全</h3>
+    <div class="card-grid">
+        <a href="https://fs.ntou.edu.tw/" target="_blank" class="dept-card bio-card">
+            <span class="card-title">🔬 食品科學系</span>
+            <span class="campus-tag">📍 生命科學院 (食安檢測)</span>
+        </a>
+        <a href="https://aqua.ntou.edu.tw/" target="_blank" class="dept-card bio-card">
+            <span class="card-title">🐟 水產養殖學系</span>
+            <span class="campus-tag">📍 生命科學院 (水質監控)</span>
+        </a>
+        <a href="https://imb.ntou.edu.tw/" target="_blank" class="dept-card bio-card">
+            <span class="card-title">🧬 海洋生物研究所</span>
+            <span class="campus-tag">📍 為了研究與保育</span>
+        </a>
+    </div>
+
+    <h3>⚡ 光電與材料</h3>
+    <div class="card-grid">
+        <a href="https://omt.ntou.edu.tw/" target="_blank" class="dept-card opt-card">
+            <span class="card-title">💡 光電與材料科技學系</span>
+            <span class="campus-tag">📍 電資學院 (光電材料)</span>
+        </a>
+        <a href="https://omt.ntou.edu.tw/" target="_blank" class="dept-card opt-card">
+            <span class="card-title">🧱 材料工程研究所</span>
+            <span class="campus-tag">📍 工學院 (已整合至光電材系)</span>
+        </a>
+        <a href="https://ee.ntou.edu.tw/" target="_blank" class="dept-card opt-card">
+            <span class="card-title">🔌 電機工程學系</span>
+            <span class="campus-tag">📍 電資學院</span>
+        </a>
+    </div>
+
+    <h3>💧 環境與工程</h3>
+    <div class="card-grid">
+        <a href="https://mei.ntou.edu.tw/" target="_blank" class="dept-card env-card">
+            <span class="card-title">♻️ 海洋環境資訊系</span>
+            <span class="campus-tag">📍 學院 (環境監測/廢水)</span>
+        </a>
+        <a href="https://me.ntou.edu.tw/" target="_blank" class="dept-card eng-card">
+            <span class="card-title">🔧 機械與機電工程學系</span>
+            <span class="campus-tag">📍 工學院</span>
+        </a>
+        <a href="https://se.ntou.edu.tw/" target="_blank" class="dept-card eng-card">
+            <span class="card-title">🚢 系統工程與造船學系</span>
+            <span class="campus-tag">📍 工學院 (結構材料)</span>
+        </a>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="index.html" style="background-color: #01579B; color: white; width: 150px; padding: 12px; border-radius: 25px; font-size: 16px; display: inline-block; text-decoration: none;">
+            ⬅️ 回到首頁
+        </a>
+    </div>
+</body>
+</html>

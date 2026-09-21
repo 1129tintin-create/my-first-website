@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國立臺灣大學 - 業務重點導覽</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 全域設定 (您提供的風格) --- */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Times+New+Roman:wght@700&display=swap');
+
+        body {
+            /* 背景：晨曦暖黃漸層 */
+            background: linear-gradient(135deg, #F9E79F 0%, #FEF9E7 100%) !important;
+            padding-bottom: 120px;
+            margin: 0;
+            font-family: 'Noto Sans TC', sans-serif;
+            color: #333;
+        }
+
+        /* 導覽列 (為了方便回首頁，保留一個簡單的頂部條) */
+        .nav-bar {
+            background: rgba(120, 40, 31, 0.9);
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            box-sizing: border-box;
+        }
+        .back-btn {
+            color: #FEF9E7;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex; align-items: center; gap: 5px;
+        }
+
+        /* --- ✨ 核心設計：皇家學術榮譽標題區 ✨ --- */
+        .royal-header-container {
+            position: relative;
+            width: 100%;
+            /* 標題區背景：淡金色羊皮紙質感 */
+            background: radial-gradient(circle, #FFF 30%, #F5CBA7 100%);
+            padding: 80px 0 50px; /* 增加上方 padding 給 nav-bar */
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(169, 50, 38, 0.15);
+            border-top: 5px solid #A93226;
+            border-bottom: 5px solid #A93226;
+            overflow: hidden;
+        }
+
+        /* 標題內容區 */
+        .header-content {
+            z-index: 2;
+            text-align: center; /* 標題置中 */
+            padding: 0 20px;
+        }
+
+        /* 大標題文字 */
+        h1.main-title {
+            margin: 0 0 20px 0;
+            font-size: 3.5rem; /* 手機適配調整 */
+            font-weight: 900;
+            color: #78281F; /* 深磚紅色 */
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.8);
+            letter-spacing: 3px;
+            font-family: 'Times New Roman', serif, 'Noto Sans TC';
+        }
+
+        /* 英文標題 */
+        .eng-title {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            color: #A93226;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* --- 榮譽裝飾 (左右兩邊) --- */
+        .royal-deco {
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 200px;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0.6; pointer-events: none;
+        }
+        .deco-left { left: 0; }
+        .deco-right { right: 0; transform: scaleX(-1); }
+
+        .royal-svg {
+            width: 100%; height: 100%;
+            fill: none; stroke: #A93226; stroke-width: 1.5; stroke-linecap: round;
+        }
+
+        /* --- 統編與地址 (膠囊版) --- */
+        .info-badge-container {
+            display: flex; flex-direction: row; gap: 20px;
+            align-items: center; justify-content: center; flex-wrap: wrap;
+        }
+        
+        .copy-badge {
+            display: inline-flex; align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: 1px solid #A93226;
+            border-left: 5px solid #A93226;
+            box-shadow: 0 4px 10px rgba(169, 50, 38, 0.1);
+            font-size: 16px; color: #2c3e50;
+            cursor: pointer; transition: all 0.2s;
+        }
+
+        .copy-badge:hover {
+            background: #A93226; transform: translateY(-3px);
+            color: white; box-shadow: 0 6px 15px rgba(169, 50, 38, 0.3);
+        }
+        .copy-badge:hover .badge-label, .copy-badge:hover .copy-text { color: #FFD700; }
+        .copy-badge:active { transform: translateY(0); }
+        
+        .copy-text { font-weight: 700; margin-left: 8px; font-family: monospace; font-size: 18px; }
+        .badge-label { user-select: none; color: #78281F; font-weight: 500;}
+
+        /* --- 下方通用樣式 --- */
+        .animation-stage {
+            background-color: #A93226 !important;
+            border-color: #F5B041;
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 30px;
+        }
+        .runner-character { text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+        /* 標題置中容器 */
+        .section-header-wrapper {
+            text-align: center; /* 關鍵：讓 h3 置中 */
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            background: #FFFFFF;
+            padding: 12px 40px;
+            border-radius: 12px;
+            font-size: 24px;
+            font-weight: 800;
+            color: #2c3e50;
+            display: inline-block; /* 配合父層 text-align: center */
+            border-left: 8px solid #A93226;
+            border-right: 8px solid #A93226; /* 左右對稱 */
+            border-top: 1px solid rgba(169, 50, 38, 0.2);
+            border-bottom: 1px solid rgba(169, 50, 38, 0.2);
+            box-shadow: 0 6px 20px rgba(169, 50, 38, 0.15);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            margin-bottom: 60px;
+        }
+
+        /* 卡片樣式 (暖色系) */
+        a.dept-card {
+            width: auto;
+            padding: 30px 20px;
+            background: rgba(255, 250, 240, 0.95); /* 象牙白 */
+            border: 2px solid rgba(245, 176, 65, 0.5); /* 淡金框 */
+            border-radius: 16px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            min-height: 120px;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 10px 10px 20px rgba(169, 50, 38, 0.05), -5px -5px 15px rgba(255, 255, 255, 0.8);
+            position: relative;
+        }
+
+        a.dept-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: white;
+            border-color: #A93226;
+            box-shadow: 15px 20px 40px rgba(169, 50, 38, 0.2), -8px -8px 20px rgba(255, 255, 255, 1);
+            z-index: 20;
+        }
+
+        .card-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-weight: 800;
+            line-height: 1.4;
+        }
+        a.dept-card:hover .card-title { color: #A93226; }
+
+        .dept-location {
+            font-size: 15px;
+            color: #555;
+            background: rgba(255,255,255,0.7);
+            padding: 5px 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-weight: 500;
+            display: flex; align-items: center; gap: 5px;
+        }
+        
+        .loc-copy { cursor: copy; }
+        
+        /* Icon 樣式 */
+        .card-icon {
+            font-size: 2rem;
+            color: #A93226;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            h1.main-title { font-size: 2.5rem; }
+            .royal-deco { opacity: 0.2; } /* 手機版淡化裝飾 */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> 回首頁 (Dashboard)</a>
+    </div>
+
+    <div class="royal-header-container">
+        
+        <div class="royal-deco deco-left">
+            <svg class="royal-svg" viewBox="0 0 100 200" preserveAspectRatio="none">
+                <line x1="10" y1="0" x2="10" y2="200" stroke-width="3" />
+                <line x1="20" y1="10" x2="20" y2="190" stroke-dasharray="5,5" />
+                <path d="M20,20 Q60,50 20,80 T20,140 T20,200" stroke-opacity="0.5" />
+                <path d="M20,50 Q50,40 60,60 Q50,80 20,70" fill="rgba(169, 50, 38, 0.1)" />
+                <path d="M20,110 Q50,100 60,120 Q50,140 20,130" fill="rgba(169, 50, 38, 0.1)" />
+                <circle cx="10" cy="10" r="6" fill="#A93226" />
+                <circle cx="10" cy="190" r="6" fill="#A93226" />
+            </svg>
+        </div>
+
+        <div class="header-content">
+            <h1 class="main-title">國立臺灣大學</h1>
+            <div class="eng-title">National Taiwan University</div>
+            
+            <div class="info-badge-container">
+                <div class="web-btn copy-badge" onclick="window.open('https://www.ntu.edu.tw/', '_blank')" style="border-color: #333; border-left-color: #333; cursor: pointer;">
+                    <span class="badge-label" style="color: #333;"><i class="fas fa-university"></i> 學校官網</span>
+                </div>
+                <div class="copy-badge" onclick="copyText('03734301')" title="點擊複製">
+                    <span class="badge-label"><i class="fas fa-file-invoice"></i> 統編：</span><span class="copy-text">03734301</span>
+                </div>
+                <div class="copy-badge" onclick="copyText('106319 臺北市大安區羅斯福路四段1號')" title="點擊複製">
+                    <span class="badge-label"><i class="fas fa-map-marker-alt"></i> 地址：</span><span class="copy-text">106319 臺北市大安區羅斯福路四段1號</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="royal-deco deco-right">
+            <svg class="royal-svg" viewBox="0 0 100 200" preserveAspectRatio="none">
+                <use href="body > div.royal-header-container > div.deco-left > svg > *" />
+                 <line x1="10" y1="0" x2="10" y2="200" stroke-width="3" />
+                 <line x1="20" y1="10" x2="20" y2="190" stroke-dasharray="5,5" />
+                 <path d="M20,20 Q60,50 20,80 T20,140 T20,200" stroke-opacity="0.5" />
+                 <path d="M20,50 Q50,40 60,60 Q50,80 20,70" fill="rgba(169, 50, 38, 0.1)" />
+                 <path d="M20,110 Q50,100 60,120 Q50,140 20,130" fill="rgba(169, 50, 38, 0.1)" />
+                 <circle cx="10" cy="10" r="6" fill="#A93226" />
+                 <circle cx="10" cy="190" r="6" fill="#A93226" />
+            </svg>
+        </div>
+
+    </div>
+
+    <div class="section-header-wrapper">
+        <h3>⚡ 電機資訊與光電</h3>
+    </div>
+    <div class="card-grid">
+        <a href="https://giee.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-microchip card-icon"></i>
+            <span class="card-title">電子工程學研究所</span>
+            <span class="dept-location">📍 博理館 / 電機二館</span>
+        </a>
+        <a href="https://gipo.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-lightbulb card-icon"></i>
+            <span class="card-title">光電工程學研究所</span>
+            <span class="dept-location">📍 博理館 / 明達館</span>
+        </a>
+        <a href="https://www.ee.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-bolt card-icon"></i>
+            <span class="card-title">電機工程學系</span>
+            <span class="dept-location">📍 電機一館 / 電機二館</span>
+        </a>
+        <a href="https://comm.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-broadcast-tower card-icon"></i>
+            <span class="card-title">電信工程學研究所</span>
+            <span class="dept-location">📍 博理館 / 明達館</span>
+        </a>
+    </div>
+
+    <div class="section-header-wrapper">
+        <h3>⚙️ 材料與化工 (CVD/PVD)</h3>
+    </div>
+    <div class="card-grid">
+        <a href="https://mse.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-layer-group card-icon"></i>
+            <span class="card-title">材料科學與工程學所</span>
+            <span class="dept-location">📍 工綜館</span>
+        </a>
+        <a href="https://che.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-flask card-icon"></i>
+            <span class="card-title">化學工程學研究所</span>
+            <span class="dept-location">📍 化工一館 / 化工二館</span>
+        </a>
+        <a href="https://www.phys.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-atom card-icon"></i>
+            <span class="card-title">物理學研究所</span>
+            <span class="dept-location">📍 凝態科學與物理學館</span>
+        </a>
+        <a href="https://www.ch.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-vial card-icon"></i>
+            <span class="card-title">化學研究所</span>
+            <span class="dept-location">📍 積學館</span>
+        </a>
+        <a href="https://www.iam.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-ruler-combined card-icon"></i>
+            <span class="card-title">應用力學研究所</span>
+            <span class="dept-location">📍 應用力學館</span>
+        </a>
+    </div>
+
+    <div class="section-header-wrapper">
+        <h3>🧬 生物與生物科技</h3>
+    </div>
+    <div class="card-grid">
+        <a href="https://ibs.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-bacterium card-icon"></i>
+            <span class="card-title">生化科學研究所</span>
+            <span class="dept-location">📍 生化科學館</span>
+        </a>
+        <a href="https://iob.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-dna card-icon"></i>
+            <span class="card-title">生物科技研究所</span>
+            <span class="dept-location">📍 長興街生物科技館</span>
+        </a>
+        <a href="https://bst.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-seedling card-icon"></i>
+            <span class="card-title">生化科技學系</span>
+            <span class="dept-location">📍 農化新館 / 生技館</span>
+        </a>
+        <a href="https://bme.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-heartbeat card-icon"></i>
+            <span class="card-title">醫學工程學系</span>
+            <span class="dept-location">📍 工綜館 / 醫學院</span>
+        </a>
+    </div>
+
+    <div class="section-header-wrapper">
+        <h3>🏢 重點研究中心 (大戶)</h3>
+    </div>
+    <div class="card-grid">
+        <a href="https://www.ntu-ccms.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-cube card-icon"></i>
+            <span class="card-title">凝態科學研究中心</span>
+            <span class="dept-location">📍 凝態科學館</span>
+        </a>
+        <a href="http://nems.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-microscope card-icon"></i>
+            <span class="card-title">奈米機電系統中心</span>
+            <span class="dept-location">📍 工綜館 / 明達館</span>
+        </a>
+    </div>
+
+    <div class="section-header-wrapper">
+        <h3>🌍 環境與土木工程</h3>
+    </div>
+    <div class="card-grid">
+        <a href="https://enve.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-recycle card-icon"></i>
+            <span class="card-title">環境工程學研究所</span>
+            <span class="dept-location">📍 環境研究大樓</span>
+        </a>
+        <a href="https://www.ce.ntu.edu.tw/" target="_blank" class="dept-card">
+            <i class="fas fa-hard-hat card-icon"></i>
+            <span class="card-title">土木工程學系</span>
+            <span class="dept-location">📍 土木工程館</span>
+        </a>
+    </div>
+
+    <script>
+        function copyText(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('已複製：' + text);
+        }
+    </script>
+</body>
+</html>

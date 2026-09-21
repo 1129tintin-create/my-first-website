@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>清華大學 - 潛在客戶導覽</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* --- 全域設定 --- */
+        body {
+            /* 背景：清華紫與新竹風城的淡雅漸層 */
+            background: linear-gradient(135deg, #EDE7F6 0%, #E1BEE7 100%) !important;
+            padding-bottom: 80px;
+            margin: 0;
+            font-size: 14px;
+            animation: elegant-entry 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes elegant-entry {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- 核心設計：NTHU 標題區 --- */
+        .nthu-header-container {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(to right, #4A148C, #7B1FA2); /* 清華紫 */
+            padding: 30px 0;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 5px solid #BA68C8;
+            box-shadow: 0 4px 15px rgba(74, 20, 140, 0.3);
+            flex-direction: column;
+        }
+
+        .header-content { text-align: center; z-index: 2; padding: 0 20px; width: 100%; max-width: 1000px; }
+
+        h1.main-title {
+            margin: 0 0 15px 0;
+            font-size: 40px;
+            font-weight: 900;
+            color: #FFFFFF;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* 學校官網按鈕 (標準大小) */
+        a.school-link-badge {
+            display: inline-flex;
+            align-items: center;
+            background: #FFFFFF;
+            color: #4A148C;
+            padding: 8px 24px; /* 標準內距 */
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 15px; /* 標準字體 */
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: 0.2s;
+            margin-bottom: 15px;
+        }
+        a.school-link-badge:hover { transform: scale(1.05); background: #E1BEE7; color: #4A148C; }
+
+        /* 資訊區 */
+        .info-badge-container { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 5px; }
+        .copy-badge {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            padding: 5px 12px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #FFFFFF;
+            font-size: 13px;
+            cursor: copy;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .copy-badge:hover { background: #FFFFFF; color: #4A148C; border-color: #FFFFFF; }
+        .copy-text { font-weight: 700; margin-left: 5px; user-select: all; }
+        .badge-label { font-weight: 500; opacity: 0.9; }
+
+        /* 分類標題 */
+        h3 {
+            background: #FFFFFF; padding: 10px 20px; border-radius: 8px;
+            margin: 30px auto 20px auto; width: fit-content;
+            font-size: 20px; font-weight: 800; color: #4A148C;
+            border-left: 6px solid #7B1FA2;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; width: 92%; max-width: 1200px; margin: 0 auto;
+        }
+
+        /* 卡片設定 */
+        a.dept-card {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 25px 15px; background: white;
+            border: 1px solid #E1BEE7; border-radius: 15px;
+            transition: 0.2s; text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        a.dept-card:hover { transform: translateY(-5px); border-color: #4A148C; box-shadow: 0 10px 25px rgba(74, 20, 140, 0.15); }
+
+        .card-title { font-size: 18px; color: #4A148C; font-weight: 800; margin-bottom: 8px; }
+        .campus-tag {
+            font-size: 12px; color: #666; background: #F3E5F5;
+            padding: 3px 10px; border-radius: 4px; font-weight: 600;
+        }
+
+        /* 特殊卡片色系 */
+        .nuc-card { border-top: 5px solid #FFC107 !important; } /* 原科/生醫黃 */
+        .sci-card { border-top: 5px solid #00BCD4 !important; } /* 理學青 */
+        .eng-card { border-top: 5px solid #FF5722 !important; } /* 工程橘 */
+        .semi-card { border-top: 5px solid #3F51B5 !important; } /* 半導體藍 */
+
+    </style>
+</head>
+<body>
+
+    <div class="nthu-header-container">
+        <div class="header-content">
+            <h1 class="main-title">國立清華大學 (NTHU)</h1>
+            
+            <a href="https://www.nthu.edu.tw/" target="_blank" class="school-link-badge">🏫 學校官網</a>
+            
+            <div class="info-badge-container">
+                <div class="copy-badge" title="點擊複製"><span class="badge-label">統編：</span><span class="copy-text">46804804</span></div>
+                <div class="copy-badge" title="點擊複製"><span class="badge-label">地址：</span><span class="copy-text">300044 新竹市光復路二段101號</span></div>
+            </div>
+        </div>
+    </div>
+
+    <h3>☢️ 生醫與環境 (電漿/輻射)</h3>
+    <div class="card-grid">
+        <a href="https://bmes.site.nthu.edu.tw/" target="_blank" class="dept-card nuc-card">
+            <span class="card-title">🩺 生醫工程與環境科學系</span>
+            <span class="campus-tag">📍 校本部 (電漿/醫學物理)</span>
+        </a>
+        <a href="https://ess.site.nthu.edu.tw/" target="_blank" class="dept-card nuc-card">
+            <span class="card-title">⚛️ 工程與系統科學系</span>
+            <span class="campus-tag">📍 校本部 (微奈米系統/綠能)</span>
+        </a>
+        <a href="https://iaes.site.nthu.edu.tw/" target="_blank" class="dept-card nuc-card">
+            <span class="card-title">💧 分析與環境科學研究所</span>
+            <span class="campus-tag">📍 校本部 (環境分析)</span>
+        </a>
+        <a href="https://dls.site.nthu.edu.tw/" target="_blank" class="dept-card nuc-card">
+            <span class="card-title">🧬 生命科學系</span>
+            <span class="campus-tag">📍 校本部 (生科一/二館)</span>
+        </a>
+    </div>
+
+    <h3>⚗️ 理學與材料</h3>
+    <div class="card-grid">
+        <a href="https://phys.site.nthu.edu.tw/" target="_blank" class="dept-card sci-card">
+            <span class="card-title">⚛️ 物理學系</span>
+            <span class="campus-tag">📍 校本部 (物理館)</span>
+        </a>
+        <a href="https://chem.site.nthu.edu.tw/" target="_blank" class="dept-card sci-card">
+            <span class="card-title">🧪 化學學系</span>
+            <span class="campus-tag">📍 校本部 (化學館)</span>
+        </a>
+        <a href="https://mse.site.nthu.edu.tw/" target="_blank" class="dept-card sci-card">
+            <span class="card-title">🧱 材料科學工程學系</span>
+            <span class="campus-tag">📍 校本部</span>
+        </a>
+    </div>
+
+    <h3>⚡ 工程與半導體</h3>
+    <div class="card-grid">
+        <a href="https://cosr.site.nthu.edu.tw/" target="_blank" class="dept-card semi-card">
+            <span class="card-title">💻 半導體研究學院</span>
+            <span class="campus-tag">📍 校本部 (先進製程)</span>
+        </a>
+        <a href="https://dee.site.nthu.edu.tw/" target="_blank" class="dept-card semi-card">
+            <span class="card-title">🔌 電機工程學系</span>
+            <span class="campus-tag">📍 校本部</span>
+        </a>
+        <a href="https://pme.site.nthu.edu.tw/" target="_blank" class="dept-card eng-card">
+            <span class="card-title">🔧 動力機械工程學系</span>
+            <span class="campus-tag">📍 校本部 (機電整合)</span>
+        </a>
+        <a href="https://che.site.nthu.edu.tw/" target="_blank" class="dept-card eng-card">
+            <span class="card-title">⚗️ 化學工程學系</span>
+            <span class="campus-tag">📍 校本部</span>
+        </a>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="index.html" style="background-color: #4A148C; color: white; width: 150px; padding: 12px; border-radius: 25px; font-size: 16px; display: inline-block; text-decoration: none;">
+            ⬅️ 回到首頁
+        </a>
+    </div>
+</body>
+</html>

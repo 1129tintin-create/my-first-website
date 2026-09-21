@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>臺中科技大學 - 潛在客戶導覽</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- 全域設定 --- */
+        body {
+            /* 背景：都會時尚的淺藍紫漸層 */
+            background: linear-gradient(135deg, #EBF5FB 0%, #F4ECF7 100%) !important;
+            padding-bottom: 80px;
+            margin: 0;
+            font-size: 14px;
+            animation: elegant-entry 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0;
+            transform-origin: center top;
+        }
+
+        @keyframes elegant-entry {
+            0% { opacity: 0; transform: scale(1.03) translateY(15px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* --- 標題區：時尚科技 --- */
+        .city-header-container {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(to right, #8E44AD, #3498DB);
+            padding: 25px 0;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 4px solid #F39C12;
+            box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3);
+            overflow: hidden;
+        }
+
+        .header-content { z-index: 2; text-align: center; padding: 0 20px; }
+
+        h1.main-title {
+            margin: 0 0 10px 0;
+            font-size: 42px;
+            font-weight: 900;
+            color: #FFFFFF;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        .city-deco {
+            position: absolute; top: 0; bottom: 0; width: 180px;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0.3; pointer-events: none;
+        }
+        .deco-left { left: 0; }
+        .deco-right { right: 0; }
+        .city-svg { width: 100%; height: 100%; fill: none; stroke: #D7BDE2; stroke-width: 1.5; }
+
+        .info-badge-container { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .copy-badge {
+            display: inline-flex; align-items: center;
+            background: rgba(255,255,255,0.15); backdrop-filter: blur(5px);
+            padding: 8px 18px; border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.4);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 15px; color: #FFFFFF; cursor: copy; transition: all 0.2s;
+        }
+        .copy-badge:hover { background: #F39C12; transform: translateY(-2px); color: #5B2C6F; border-color: #F39C12; }
+        .copy-badge:hover .badge-label { color: #5B2C6F; }
+        .copy-text { font-weight: 700; margin-left: 6px; font-family: monospace; font-size: 16px; }
+        .badge-label { user-select: none; color: #E8DAEF; font-weight: 500; }
+
+        .animation-stage {
+            background-color: #8E44AD !important; border-color: #D7BDE2;
+            margin-top: 15px; padding: 5px 0;
+        }
+        .runner-character { text-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 24px !important; }
+
+        h3 {
+            background: #FFFFFF; padding: 8px 20px; border-radius: 8px;
+            margin-top: 15px; margin-bottom: 20px;
+            font-size: 20px; font-weight: 800; color: #5B2C6F;
+            display: inline-block; border-left: 5px solid #8E44AD;
+            border: 1px solid rgba(142, 68, 173, 0.2); border-left-color: #8E44AD;
+            box-shadow: 0 4px 12px rgba(142, 68, 173, 0.15);
+        }
+
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px; align-items: start; width: 92%; max-width: 1200px;
+            margin: 0 auto; margin-bottom: 50px;
+        }
+
+        a.dept-card {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            width: auto; height: auto; min-height: 100px;
+            padding: 20px 15px; background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #D7BDE2; border-radius: 12px;
+            transition: all 0.2s; text-align: center; text-decoration: none;
+            box-shadow: 5px 5px 15px rgba(142, 68, 173, 0.08);
+        }
+        a.dept-card:hover {
+            transform: translateY(-5px) scale(1.01); background: white;
+            border-color: #8E44AD;
+            box-shadow: 10px 15px 30px rgba(142, 68, 173, 0.2);
+        }
+        .card-title { font-size: 18px; margin-bottom: 8px; color: #5B2C6F; font-weight: 700; }
+        a.dept-card:hover .card-title { color: #8E44AD; }
+        .dept-location {
+            font-size: 13px; color: #666; background: rgba(244, 236, 247, 0.8);
+            padding: 4px 10px; border-radius: 4px; margin-top: 4px;
+        }
+
+        .beauty-card { background: linear-gradient(135deg, #FDEBD0 0%, #FEF9E7 100%); border-color: #F5B041 !important; }
+        .beauty-card:hover { border-color: #D35400 !important; }
+        .beauty-card .card-title { color: #D35400; }
+    </style>
+</head>
+<body>
+
+    <div class="city-header-container">
+        <div class="city-deco deco-left">
+            <svg class="city-svg" viewBox="0 0 100 200"><circle cx="50" cy="50" r="20" /><path d="M50,80 L50,150" stroke-width="2"/><line x1="20" y1="120" x2="80" y2="120"/></svg>
+        </div>
+        <div class="header-content">
+            <h1 class="main-title">國立臺中科技大學 (NUTC)</h1>
+            <div class="info-badge-container">
+                <div class="copy-badge" title="複製統編"><span class="badge-label">統編：</span><span class="copy-text">52009903</span></div>
+                <div class="copy-badge" title="複製地址"><span class="badge-label">地址：</span><span class="copy-text">404 台中市北區三民路三段129號</span></div>
+            </div>
+        </div>
+        <div class="city-deco deco-right">
+            <svg class="city-svg" viewBox="0 0 100 200"><rect x="30" y="40" width="40" height="40" /><rect x="30" y="100" width="40" height="40" /></svg>
+        </div>
+    </div>
+
+    <div class="animation-stage"><div class="runner-character">🏃‍♂️ 💄 🏪 💻</div></div>
+
+    <h3>💄 美容與護理 (材料/生技/檢測)</h3>
+    <div class="card-grid">
+        <a href="https://cosmetic.nutc.edu.tw/" target="_blank" class="dept-card beauty-card">
+            <span class="card-title">💅 美容系 (材料/儀器)</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">中商大樓 / 護理館</span></span>
+        </a>
+        <a href="https://nursing.nutc.edu.tw/" target="_blank" class="dept-card beauty-card">
+            <span class="card-title">🏥 護理系 (醫材)</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">護理館 (三民/民生)</span></span>
+        </a>
+    </div>
+
+    <h3>💻 智慧與資訊 (設備監控)</h3>
+    <div class="card-grid">
+        <a href="https://csie.nutc.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🖥️ 資訊工程系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">資訊館</span></span>
+        </a>
+        <a href="https://im.nutc.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">📊 資訊管理系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">中商大樓</span></span>
+        </a>
+    </div>
+
+    <a href="index.html" style="background-color: #8E44AD; color: white; width: 150px; padding: 10px; border-radius: 25px; font-size: 16px; display: inline-block;">
+        ⬅️ 回到首頁
+    </a>
+</body>
+</html>

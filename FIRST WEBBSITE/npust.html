@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國立屏東科技大學</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #e0e0e0;
+            --hover-shadow: rgba(0,0,0,0.1);
+            --theme-blue: #3498db;
+            --theme-red: #e74c3c;
+            --theme-orange: #f39c12;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-main);
+        }
+        .mech-header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 15px;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .mech-deco {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 100px;
+            opacity: 0.2;
+        }
+        .deco-left { left: 0; }
+        .deco-right { right: 0; }
+        .header-content {
+            text-align: center;
+            z-index: 1;
+        }
+        .main-title {
+            color: #fff;
+            font-size: 2.5em;
+            margin: 0 0 15px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .school-link-badge {
+            display: inline-block;
+            background-color: #f1c40f;
+            color: #2c3e50;
+            padding: 8px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+        }
+        .school-link-badge:hover {
+            transform: translateY(-2px);
+            background-color: #f39c12;
+            color: #fff;
+        }
+        /* 統編與地址的專屬樣式 */
+        .info-badge-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .copy-badge {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+        .copy-badge:hover {
+            background-color: #fff;
+            transform: scale(1.05);
+            border: 1px solid var(--theme-blue);
+        }
+        .badge-label {
+            color: #2c3e50;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .copy-text {
+            color: #2980b9;
+            font-weight: bold;
+            font-family: monospace;
+            font-size: 1.05em;
+        }
+        h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--theme-blue);
+            padding-bottom: 10px;
+            margin-top: 30px;
+            font-size: 1.5em;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .dept-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            text-decoration: none;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .dept-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px var(--hover-shadow);
+            border-color: var(--theme-blue);
+        }
+        .mech-card { border-left: 5px solid var(--theme-orange); }
+        .chem-card { border-left: 5px solid var(--theme-blue); }
+        .card-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .animation-stage {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+
+  <div class="mech-header-container">
+    <div class="mech-deco deco-left"><svg class="mech-svg" viewBox="0 0 100 200"><path d="M20,100 L50,50 L80,100 L50,150 Z" stroke-width="2" fill="none"/><circle cx="50" cy="100" r="10" fill="none"/></svg></div>
+    <div class="header-content">
+      <h1 class="main-title">國立屏東科技大學 (NPUST)</h1>
+      <div><a href="https://www.npust.edu.tw/" target="_blank" class="school-link-badge">🏫 學校官網</a></div>
+      
+      <!-- 統編與地址 -->
+      <div class="info-badge-container">
+        <div class="copy-badge" title="點擊複製統編"><span class="badge-label">統編：</span><span class="copy-text">91004005</span></div>
+        <div class="copy-badge" title="點擊複製地址"><span class="badge-label">地址：</span><span class="copy-text">912301 屏東縣內埔鄉學府路1號</span></div>
+      </div>
+    </div>
+    <div class="mech-deco deco-right"><svg class="mech-svg" viewBox="0 0 100 200"><rect x="30" y="50" width="40" height="100" stroke-width="2" rx="5" fill="none"/></svg></div>
+  </div>
+
+  <div class="animation-stage"><div class="runner-character">🏃 ⚙️ 🧊 🧪</div></div>
+
+  <h3>⚙️ 工程學院</h3>
+  <div class="card-grid">
+    <a href="https://vehicle.npust.edu.tw/" target="_blank" class="dept-card mech-card">
+      <span class="card-title">🚗 車輛工程系</span>
+    </a>
+    <a href="https://me.npust.edu.tw/" target="_blank" class="dept-card mech-card">
+      <span class="card-title">🔧 機械工程系</span>
+    </a>
+    <a href="https://biome.npust.edu.tw/" target="_blank" class="dept-card mech-card">
+      <span class="card-title">🤖 生物機電工程系</span>
+    </a>
+    <a href="https://ce.npust.edu.tw/" target="_blank" class="dept-card mech-card">
+      <span class="card-title">🏗️ 土木工程系</span>
+    </a>
+    <a href="https://swc.npust.edu.tw/" target="_blank" class="dept-card chem-card">
+      <span class="card-title">⛰️ 水土保持系</span>
+    </a>
+    <a href="https://ese.npust.edu.tw/" target="_blank" class="dept-card chem-card">
+      <span class="card-title">🍃 環境工程與科學系</span>
+    </a>
+    <a href="https://materials.npust.edu.tw/" target="_blank" class="dept-card chem-card">
+      <span class="card-title">🔬 材料工程研究所</span>
+    </a>
+  </div>
+
+  <!-- 點擊複製功能的 JavaScript -->
+ <!-- 點擊複製功能的 JavaScript (直接複製無彈窗版) -->
+  <script>
+    document.querySelectorAll('.copy-badge').forEach(badge => {
+      badge.addEventListener('click', function() {
+        const textSpan = this.querySelector('.copy-text');
+        const originalText = textSpan.dataset.original || textSpan.innerText;
+        
+        // 紀錄原始文字，避免連續點擊出錯
+        if (!textSpan.dataset.original) {
+          textSpan.dataset.original = originalText;
+        }
+
+        // 如果已經顯示已複製，就不重複執行
+        if (textSpan.innerText === '✅ 已複製！') return;
+
+        // 寫入剪貼簿
+        navigator.clipboard.writeText(originalText).then(() => {
+          // 改變文字與顏色提供視覺回饋
+          textSpan.innerText = '✅ 已複製！';
+          textSpan.style.color = '#27ae60'; // 變成成功綠色
+          
+          // 1.5秒後恢復原狀
+          setTimeout(() => {
+            textSpan.innerText = originalText;
+            textSpan.style.color = '#2980b9'; // 恢復原來的藍色
+          }, 1500);
+        }).catch(err => {
+          console.error('複製失敗', err);
+          textSpan.innerText = '❌ 失敗';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>輔仁大學 - 業務重點導覽</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+
+        :root {
+            /* 梵蒂岡教廷風配色 */
+            --fju-blue: #003366;       
+            --fju-gold: #C5A059;       
+            --bg-color: #fcfcfc;       
+            --text-color: #333;
+            --card-shadow: 0 8px 20px rgba(0, 51, 102, 0.15);
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0; padding: 0; color: var(--text-color);
+            background-image: radial-gradient(#e0e0e0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* 導覽列：包含回首頁按鈕 */
+        .nav-bar {
+            background: #333;
+            padding: 10px 20px;
+        }
+        .back-btn {
+            color: white; text-decoration: none; font-weight: bold;
+            display: flex; align-items: center; gap: 5px; width: fit-content;
+        }
+        .back-btn:hover { color: var(--fju-gold); }
+
+        header {
+            background: linear-gradient(135deg, var(--fju-blue), #002244);
+            color: white;
+            padding: 40px 20px 60px;
+            text-align: center;
+            border-bottom: 6px solid var(--fju-gold);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .bg-decoration {
+            position: absolute; top: -50px; left: -50px;
+            font-size: 15rem; opacity: 0.05; color: var(--fju-gold);
+            transform: rotate(-15deg); pointer-events: none;
+        }
+
+        h1 {
+            font-size: 3rem; margin: 0; font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        
+        .eng-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem; color: var(--fju-gold);
+            margin-top: 5px; letter-spacing: 3px; opacity: 0.9;
+        }
+
+        .info-bar {
+            display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--fju-gold);
+            padding: 10px 25px; border-radius: 50px;
+            cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; gap: 10px;
+            color: white; font-weight: bold; position: relative;
+        }
+
+        .info-card:hover {
+            background: var(--fju-gold); color: var(--fju-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4);
+        }
+        
+        .info-card:active { transform: scale(0.95); }
+        
+        .tooltip {
+            position: absolute; bottom: -35px; left: 50%; transform: translateX(-50%);
+            background: #333; color: #fff; padding: 5px 10px; border-radius: 5px;
+            font-size: 12px; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+        }
+        .info-card.copied .tooltip { opacity: 1; }
+
+        .web-btn {
+            background: white; color: var(--fju-blue);
+            text-decoration: none; padding: 10px 30px; border-radius: 50px;
+            font-weight: 900; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .web-btn:hover { background: var(--fju-gold); color: white; transform: translateY(-3px); }
+
+        .main-container {
+            max-width: 1200px; margin: -30px auto 50px; padding: 0 20px;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;
+        }
+
+        .dept-group {
+            background: white; border-radius: 15px;
+            width: 350px; flex-grow: 1; max-width: 400px;
+            box-shadow: var(--card-shadow);
+            border-top: 5px solid var(--fju-blue);
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .group-header {
+            background: #f4f8fb; padding: 20px; text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        .group-header h2 { margin: 0; color: var(--fju-blue); font-size: 1.5rem; }
+        .group-header p { margin: 5px 0 0; font-size: 0.9rem; color: #666; }
+
+        .dept-list { padding: 10px; }
+
+        .dept-link {
+            display: flex; align-items: center;
+            padding: 15px 20px; margin: 10px;
+            background: white; border: 1px solid #eee;
+            border-radius: 10px; text-decoration: none; color: #444;
+            transition: all 0.2s;
+            position: relative; overflow: hidden;
+        }
+
+        .dept-link:hover {
+            border-color: var(--fju-blue);
+            background: #f9fcff;
+            transform: translateX(5px);
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .dept-link i {
+            font-size: 1.5rem; width: 40px; text-align: center;
+            color: var(--fju-gold); margin-right: 15px;
+        }
+        
+        .dept-name { font-weight: 700; font-size: 1.1rem; display: block; }
+        .dept-desc { font-size: 0.85rem; color: #888; font-weight: normal; margin-top: 3px; display: block; }
+
+        .tag {
+            font-size: 0.75rem; padding: 2px 8px; border-radius: 4px;
+            margin-left: auto; font-weight: bold;
+        }
+        .tag-plasma { background: #e3f2fd; color: #1565c0; } 
+        .tag-waste { background: #e8f5e9; color: #2e7d32; }  
+        .tag-material { background: #fff3e0; color: #ef6c00; } 
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .info-bar { flex-direction: column; align-items: center; }
+            .info-card { width: 80%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> 回首頁 (Dashboard)</a>
+    </div>
+
+    <header>
+        <i class="fas fa-cross bg-decoration"></i>
+        <h1>輔仁大學</h1>
+        <div class="eng-title">Fu Jen Catholic University</div>
+        
+        <div class="info-bar">
+            <div class="web-btn" onclick="window.open('https://www.fju.edu.tw/', '_blank')" style="cursor: pointer;">
+                <i class="fas fa-university"></i> 學校官網
+            </div>
+            
+            <div class="info-card" onclick="copyText(this, '35701598')">
+                <i class="fas fa-file-invoice"></i> 
+                <span>統編：35701598</span>
+                <div class="tooltip">已複製統編！</div>
+            </div>
+            
+            <div class="info-card" onclick="copyText(this, '242062 新北市新莊區中正路510號')">
+                <i class="fas fa-map-marker-alt"></i> 
+                <span>地址：新北市新莊區中正路510號</span>
+                <div class="tooltip">已複製地址！</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+
+        <div class="dept-group">
+            <div class="group-header">
+                <h2><i class="fas fa-atom"></i> 物理與光電</h2>
+                <p>石英管、真空設備、光電檢測</p>
+            </div>
+            <div class="dept-list">
+                <a href="http://www.phys.fju.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-microscope"></i>
+                    <div>
+                        <span class="dept-name">物理學系</span>
+                        <span class="dept-desc">光電物理、真空薄膜、奈米材料</span>
+                    </div>
+                    <span class="tag tag-material">石英/光電</span>
+                </a>
+                <a href="http://www.ee.fju.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-bolt"></i>
+                    <div>
+                        <span class="dept-name">電機工程學系</span>
+                        <span class="dept-desc">電漿電源、自動控制、系統整合</span>
+                    </div>
+                    <span class="tag tag-plasma">電漿/設備</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="dept-group">
+            <div class="group-header">
+                <h2><i class="fas fa-flask"></i> 化學與材料</h2>
+                <p>廢水處理藥劑、材料分析、環工</p>
+            </div>
+            <div class="dept-list">
+                <a href="http://www.chem.fju.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-vial"></i>
+                    <div>
+                        <span class="dept-name">化學系</span>
+                        <span class="dept-desc">材料化學、環境分析、廢水處理</span>
+                    </div>
+                    <span class="tag tag-material">材料/環工</span>
+                </a>
+                 <a href="http://www.ls.fju.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-dna"></i>
+                    <div>
+                        <span class="dept-name">生命科學系</span>
+                        <span class="dept-desc">生物技術、環境生態</span>
+                    </div>
+                    <span class="tag tag-waste">生技/環工</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="dept-group">
+            <div class="group-header">
+                <h2><i class="fas fa-leaf"></i> 農業與食品</h2>
+                <p>食品工廠廢水、殺菌技術</p>
+            </div>
+            <div class="dept-list">
+                <a href="http://www.foodscience.fju.edu.tw/" target="_blank" class="dept-link">
+                    <i class="fas fa-utensils"></i>
+                    <div>
+                        <span class="dept-name">食品科學系</span>
+                        <span class="dept-desc">食品加工廢水、電漿殺菌應用</span>
+                    </div>
+                    <span class="tag tag-waste">廢水/農業</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function copyText(element, text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            element.classList.add('copied');
+            setTimeout(() => {
+                element.classList.remove('copied');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

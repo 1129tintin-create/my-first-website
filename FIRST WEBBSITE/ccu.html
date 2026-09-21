@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>中正大學 - 潛在客戶導覽</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* --- 全域設定 --- */
+        body {
+            /* 背景：溫暖的晨曦漸層 */
+            background: linear-gradient(135deg, #FDEDEC 0%, #FFFFFF 100%) !important;
+            padding-bottom: 80px;
+            margin: 0;
+            font-size: 14px; /* 保持精緻的小字體 */
+            
+            /* ✨ 進場動畫：優雅浮現 (縮放+上浮) ✨ */
+            animation: elegant-entry 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0; /* 預設隱藏 */
+            transform-origin: center top;
+        }
+
+        @keyframes elegant-entry {
+            0% {
+                opacity: 0;
+                transform: scale(1.03) translateY(15px); /* 稍微放大並下沉 */
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0); /* 定格 */
+            }
+        }
+
+        /* --- ✨ 核心設計：磚紅學院標題區 (高度縮減) ✨ --- */
+        .brick-header-container {
+            position: relative;
+            width: 100%;
+            /* 標題區背景：從學院紅過渡到深紅 */
+            background: linear-gradient(to right, #C0392B, #922B21);
+            padding: 25px 0;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 4px solid #F1C40F;
+            box-shadow: 0 4px 10px rgba(192, 57, 43, 0.3);
+            overflow: hidden;
+        }
+
+        /* 標題內容區 */
+        .header-content {
+            z-index: 2;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        /* 大標題文字 (精緻版：42px) */
+        h1.main-title {
+            margin: 0 0 10px 0;
+            font-size: 42px;
+            font-weight: 900;
+            color: #FFFFFF;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* --- 紅磚與鳳梨裝飾 (縮小版) --- */
+        .brick-deco {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .deco-left { left: 0; }
+        .deco-right { right: 0; }
+
+        /* SVG 線條設定 */
+        .brick-svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: #F5B7B1;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* --- 統編與地址 (緊湊版) --- */
+        .info-badge-container {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .copy-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            padding: 8px 18px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 15px;
+            color: #FFFFFF;
+            cursor: copy;
+            transition: all 0.2s;
+        }
+
+        .copy-badge:hover {
+            background: #F1C40F;
+            transform: translateY(-2px);
+            color: #922B21;
+            border-color: #F1C40F;
+        }
+        .copy-badge:hover .badge-label { color: #922B21; }
+        .copy-badge:active { transform: translateY(0); }
+        
+        .copy-text { user-select: all; font-weight: 700; margin-left: 6px; font-family: monospace; font-size: 16px; }
+        .badge-label { user-select: none; color: #FADBD8; font-weight: 500;}
+
+
+        /* --- 下方通用樣式 --- */
+        .animation-stage {
+            background-color: #C0392B !important;
+            border-color: #E6B0AA;
+            margin-top: 15px;
+            padding: 5px 0;
+        }
+        .runner-character { text-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 24px !important; }
+
+        /* 分類標題 (h3 精緻版) */
+        h3 {
+            background: #FFFFFF;
+            padding: 8px 20px;
+            border-radius: 8px;
+            margin-top: 15px;      
+            margin-bottom: 20px;   
+            font-size: 20px;
+            font-weight: 800;
+            color: #922B21;
+            display: inline-block;
+            border-left: 5px solid #C0392B;
+            border: 1px solid rgba(192, 57, 43, 0.2);
+            border-left-color: #C0392B;
+            box-shadow: 0 4px 12px rgba(192, 57, 43, 0.15);
+            position: relative;
+            z-index: 10;
+            clear: both;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            align-items: start;
+            width: 92%;
+            max-width: 1200px; /* 限制寬度，讓畫面更集中 */
+            margin: 0 auto;
+            margin-bottom: 50px;
+        }
+
+        /* 卡片樣式 (精緻版) */
+        a.dept-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            width: auto;
+            height: auto;
+            min-height: 100px;
+            
+            padding: 20px 15px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #E6B0AA;
+            border-radius: 12px;
+            
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-align: center;
+            position: relative;
+            text-decoration: none;
+            
+            z-index: 1;
+            box-shadow: 
+                5px 5px 15px rgba(192, 57, 43, 0.08),
+                -3px -3px 10px rgba(255, 255, 255, 0.9);
+        }
+
+        a.dept-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            background: white;
+            border-color: #C0392B;
+            box-shadow: 
+                10px 15px 30px rgba(192, 57, 43, 0.2),
+                -5px -5px 15px rgba(255, 255, 255, 1);
+            z-index: 20;
+        }
+
+        .card-title {
+            font-size: 18px; /* 精緻版字體 */
+            margin-bottom: 8px;
+            color: #922B21;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        a.dept-card:hover .card-title { color: #C0392B; }
+
+        .dept-location {
+            font-size: 13px;
+            color: #666;
+            background: rgba(253, 237, 236, 0.8);
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-top: 4px;
+            user-select: none;
+            font-weight: 500;
+        }
+        
+        .loc-copy { user-select: all; cursor: copy; }
+
+        /* 特殊卡片：電漿/環境 (綠色) */
+        .env-card {
+            background: linear-gradient(135deg, #E8F8F5 0%, #D1F2EB 100%);
+            border-color: #1ABC9C !important;
+        }
+        .env-card:hover { border-color: #148F77 !important; }
+        .env-card .card-title { color: #0E6251; }
+
+        /* 特殊卡片：精密/光機電 (金屬色) */
+        .mech-card {
+            background: linear-gradient(135deg, #FBFCFC 0%, #F4F6F6 100%);
+            border-color: #7F8C8D !important;
+        }
+        .mech-card:hover { border-color: #2C3E50 !important; }
+        .mech-card .card-title { color: #2C3E50; }
+    </style>
+</head>
+<body>
+
+    <div class="brick-header-container">
+        
+        <div class="brick-deco deco-left">
+            <svg class="brick-svg" viewBox="0 0 100 200" preserveAspectRatio="none">
+                <rect x="10" y="20" width="30" height="15" />
+                <rect x="50" y="20" width="30" height="15" />
+                <rect x="30" y="40" width="30" height="15" />
+                <rect x="10" y="60" width="30" height="15" />
+                <rect x="50" y="60" width="30" height="15" />
+                <rect x="30" y="80" width="30" height="15" />
+                <rect x="10" y="100" width="30" height="15" />
+                <rect x="50" y="100" width="30" height="15" />
+                <line x1="10" y1="130" x2="80" y2="130" stroke-width="2" />
+                <line x1="10" y1="140" x2="80" y2="140" stroke-width="2" />
+            </svg>
+        </div>
+
+        <div class="header-content">
+            <h1 class="main-title">國立中正大學 (CCU)</h1>
+            
+            <div class="info-badge-container">
+                <div class="copy-badge" title="複製統編">
+                    <span class="badge-label">統編：</span><span class="copy-text">06313774</span>
+                </div>
+                <div class="copy-badge" title="複製地址">
+                    <span class="badge-label">地址：</span><span class="copy-text">621301 嘉義縣民雄鄉大學路一段168號</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="brick-deco deco-right">
+            <svg class="brick-svg" viewBox="0 0 100 200" preserveAspectRatio="none">
+                <circle cx="70" cy="40" r="15" fill="none" stroke="#F1C40F" stroke-width="2" />
+                <line x1="70" y1="15" x2="70" y2="5" stroke="#F1C40F" />
+                <line x1="70" y1="65" x2="70" y2="75" stroke="#F1C40F" />
+                <line x1="45" y1="40" x2="35" y2="40" stroke="#F1C40F" />
+                <line x1="95" y1="40" x2="105" y2="40" stroke="#F1C40F" />
+                
+                <ellipse cx="50" cy="120" rx="20" ry="30" fill="none" stroke="#F1C40F" stroke-width="2" />
+                <path d="M50,90 L40,80 L50,70 L60,80 Z" stroke="#27AE60" fill="none" />
+                <line x1="40" y1="110" x2="60" y2="130" stroke="#F1C40F" />
+                <line x1="60" y1="110" x2="40" y2="130" stroke="#F1C40F" />
+            </svg>
+        </div>
+
+    </div>
+
+    <div class="animation-stage">
+        <div class="runner-character" style="font-size: 24px;">🏃‍♂️ 🍍 🧱 ☀️</div>
+    </div>
+
+    <h3>⚙️ 光機電與真空技術 (真空/鍍膜)</h3>
+    <div class="card-grid">
+        <a href="https://deptime.ccu.edu.tw/" target="_blank" class="dept-card mech-card">
+            <span class="card-title">🔧 機械工程學系 (光機電)</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工學院一館</span></span>
+        </a>
+        <a href="https://ee.ccu.edu.tw/" target="_blank" class="dept-card mech-card">
+            <span class="card-title">🔌 電機工程學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工學院二館</span></span>
+        </a>
+    </div>
+
+    <h3>🌿 環境與材料應用 (電漿廢水/材料)</h3>
+    <div class="card-grid">
+        <a href="https://che.ccu.edu.tw/" target="_blank" class="dept-card env-card">
+            <span class="card-title">🧱 化學工程學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">工學院二館</span></span>
+        </a>
+        <a href="https://eq.ccu.edu.tw/" target="_blank" class="dept-card env-card">
+            <span class="card-title">🌍 地球與環境科學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">理學院 / 地震館</span></span>
+        </a>
+    </div>
+
+    <h3>⚗️ 基礎科學與檢測 (石英管/分析)</h3>
+    <div class="card-grid">
+        <a href="https://deptche.ccu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🧪 化學暨生物化學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">理學院</span></span>
+        </a>
+        <a href="https://physics.ccu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">⚛️ 物理學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">理學院</span></span>
+        </a>
+        <a href="https://admbio.ccu.edu.tw/" target="_blank" class="dept-card">
+            <span class="card-title">🧬 生物醫學科學系</span>
+            <span class="dept-location">📍 <span class="loc-copy" onclick="event.preventDefault();">理學院</span></span>
+        </a>
+    </div>
+
+    <a href="index.html" style="background-color: #C0392B; color: white; width: 150px; padding: 10px; border-radius: 25px; font-size: 16px; display: inline-block;">
+        ⬅️ 回到首頁
+    </a>
+</body>
+</html>
